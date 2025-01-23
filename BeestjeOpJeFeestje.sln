@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeestjeOpJeFeestje.Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeestjeOpJeFeestje.Tests", "BeestjeOpJeFeestje.Tests\BeestjeOpJeFeestje.Tests.csproj", "{163C6C43-0E0F-4D4C-9029-BDE74D00AEFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeestjeOpJeFeestje.Data", "BeestjeOpJeFeestje.Data\BeestjeOpJeFeestje.Data.csproj", "{2BD0569F-B276-4781-837E-2BF51A7E917F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{163C6C43-0E0F-4D4C-9029-BDE74D00AEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{163C6C43-0E0F-4D4C-9029-BDE74D00AEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{163C6C43-0E0F-4D4C-9029-BDE74D00AEFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD0569F-B276-4781-837E-2BF51A7E917F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD0569F-B276-4781-837E-2BF51A7E917F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD0569F-B276-4781-837E-2BF51A7E917F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD0569F-B276-4781-837E-2BF51A7E917F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

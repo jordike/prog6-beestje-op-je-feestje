@@ -1,44 +1,59 @@
-    using BeestjeOpJeFeestje.Models;
-    using Microsoft.EntityFrameworkCore;
+using BeestjeOpJeFeestje.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-    namespace BeestjeOpJeFeestje;
+namespace BeestjeOpJeFeestje;
 
-    public class Program
+public class Program
+{
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.Configure<IdentityOptions>(options =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            options.SignIn.RequireConfirmedAccount = false;
+        });
 
+        // Add services to the container.
+        builder.Services.AddControllersWithViews();
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+        builder.Services.AddIdentity<Account, IdentityRole>()
+            .AddEntityFrameworkStores<BeestjeOpJeFeestjeContext>()
+            .AddDefaultTokenProviders();
 
-            builder.Services.AddDbContext<BeestjeOpJeFeestjeContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("BeestjeOpJeFeestje"));
-            });
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = "/Auth/Login";
+        });
 
-            var app = builder.Build();
+        builder.Services.AddDbContext<BeestjeOpJeFeestjeContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BeestjeOpJeFeestje"));
+        });
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+        var app = builder.Build();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
         }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.Run();
     }
+}

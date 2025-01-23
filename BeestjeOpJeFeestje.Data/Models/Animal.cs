@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BeestjeOpJeFeestje.Models
+namespace BeestjeOpJeFeestje.Data.Models
 {
     public class Animal
     {

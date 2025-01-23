@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BeestjeOpJeFeestje.Models
+namespace BeestjeOpJeFeestje.Data.Models
 {
     public class Booking
     {

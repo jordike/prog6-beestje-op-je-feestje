@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BeestjeOpJeFeestje.Models.ViewModels;
+namespace BeestjeOpJeFeestje.Data.Models.ViewModels;
 
 public class LoginViewModel
 {
@@ -11,5 +11,6 @@ public class LoginViewModel
     [Required]
     [MinLength(2)]
     [MaxLength(50)]
+    [DataType(DataType.Password)]
     public string Password { get; set; }
 }
