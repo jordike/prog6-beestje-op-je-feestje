@@ -30,6 +30,11 @@ public class AccountService
         return await _userManager.FindByIdAsync(id);
     }
 
+    public async Task<Account?> GetUserByEmail(string email)
+    {
+        return await _userManager.FindByEmailAsync(email);
+    }
+
     public async Task DeleteUser(Account account)
     {
         await _userManager.DeleteAsync(account);
@@ -51,6 +56,11 @@ public class AccountService
         IdentityResult result = await _userManager.CreateAsync(user, password);
 
         return new Tuple<string, IdentityResult>(password, result);
+    }
+
+    public async Task AssignRole(Account user, string role)
+    {
+        await _userManager.AddToRoleAsync(user, role);
     }
 
     private string GeneratePassword()

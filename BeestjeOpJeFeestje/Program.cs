@@ -96,5 +96,6 @@ public class Program
         }
 
         await roleManager.CreateAsync(new IdentityRole("Admin"));
+        await roleManager.CreateAsync(new IdentityRole("Customer"));
     }
 }

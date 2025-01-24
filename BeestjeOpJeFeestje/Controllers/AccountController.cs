@@ -73,6 +73,12 @@ public class AccountController : Controller
             return View(viewModel);
         }
 
+        // Assign the Customer role to the new user
+        Account? user = await _accountService.GetUserByEmail(viewModel.Email);
+
+        if (user != null)
+            await _accountService.AssignRole(user, "Customer");
+
         TempData["Password"] = result.Item1;
 
         return RedirectToAction("Create");
