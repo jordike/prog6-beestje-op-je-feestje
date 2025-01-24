@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class AccountController : Controller
 {
     private readonly AccountService _accountService;

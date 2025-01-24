@@ -55,7 +55,9 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        await SeedDefaultUser(app.Services.CreateScope().ServiceProvider);
+        IServiceProvider serviceProvider = app.Services.CreateScope().ServiceProvider;
+        await SeedDefaultRoles(serviceProvider);
+        await SeedDefaultUser(serviceProvider);
 
         app.Run();
     }
@@ -80,5 +82,19 @@ public class Program
         };
 
         await userManager.CreateAsync(user, "Admin@123");
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+
+    private static async Task SeedDefaultRoles(IServiceProvider serviceProvider)
+    {
+        RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        // If there are already roles in the database, don't add the default roles.
+        if (roleManager.Roles.Any())
+        {
+            return;
+        }
+
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
     }
 }
