@@ -15,4 +15,6 @@ public class CreateAccountViewModel
 
     [DataType(DataType.PhoneNumber)]
     public string PhoneNumber { get; set; }
+
+    public MembershipLevel MembershipLevel { get; set; }
 }

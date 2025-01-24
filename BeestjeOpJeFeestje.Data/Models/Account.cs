@@ -11,12 +11,9 @@ namespace BeestjeOpJeFeestje.Data.Models
         [Required]
         public string Address { get; set; }
 
-        [EmailAddress]
-        public string Email { get; set; }
-
         [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        public Membershiplevel MembershipLevel { get; set; }
+        public MembershipLevel MembershipLevel { get; set; }
     }
 }

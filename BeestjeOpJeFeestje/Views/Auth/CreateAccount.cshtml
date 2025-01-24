@@ -2,6 +2,13 @@
 
 <div class="row">
     <div class="col-12 col-md-6 col-lg-4">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
         @if (TempData["Password"] != null)
         {
             <div class="alert alert-success">
@@ -38,6 +45,17 @@
                 <label class="form-label">Telefoonnummer:</label>
                 <input type="text" class="form-control" asp-for="PhoneNumber"/>
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Klantenkaart:</label>
+                <select asp-for="MembershipLevel" class="form-select" asp-for="MembershipLevel">
+                    @foreach (MembershipLevel level in Enum.GetValues(typeof(MembershipLevel)))
+                    {
+                        <option value="@level">@level</option>
+                    }
+                </select>
+                <span asp-validation-for="MembershipLevel" class="text-danger"></span>
             </div>
 
             <button type="submit" class="btn btn-primary mb-3">Account aanmaken</button>

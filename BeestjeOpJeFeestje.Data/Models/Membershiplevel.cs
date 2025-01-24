@@ -1,6 +1,6 @@
 ﻿namespace BeestjeOpJeFeestje.Data.Models
 {
-    public enum Membershiplevel
+    public enum MembershipLevel
     {
         Silver,
         Gold,

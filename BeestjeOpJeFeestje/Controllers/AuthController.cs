@@ -50,7 +50,6 @@ public class AuthController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    [AllowAnonymous]
     public IActionResult CreateAccount()
     {
         return View();
@@ -58,18 +57,21 @@ public class AuthController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [AllowAnonymous]
     public async Task<IActionResult> CreateAccount(CreateAccountViewModel viewModel)
     {
         if (!ModelState.IsValid)
             return View(viewModel);
 
-        string? password = await _authService.CreateUser(viewModel.Name, viewModel.Email, viewModel.Address, viewModel.PhoneNumber, Membershiplevel.Silver);
+        Tuple<string, IdentityResult> result = await _authService.CreateUser(viewModel.Name, viewModel.Email, viewModel.Address, viewModel.PhoneNumber, viewModel.MembershipLevel);
 
-        if (password == null)
+        if (!result.Item2.Succeeded)
+        {
+            TempData["Error"] = string.Join('\n', result.Item2.Errors.Select(error => error.Description));
+
             return View(viewModel);
+        }
 
-        TempData["Password"] = password;
+        TempData["Password"] = result.Item1;
 
         return RedirectToAction("CreateAccount");
     }

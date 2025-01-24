@@ -39,14 +39,13 @@ public class AuthService
         await _signInManager.SignOutAsync();
     }
 
-    public async Task<string?> CreateUser(string name, string email, string adres, string phoneNumber, Membershiplevel membershipLevel)
+    public async Task<Tuple<string, IdentityResult>> CreateUser(string name, string email, string adres, string phoneNumber, MembershipLevel membershipLevel)
     {
         Account user = new Account
         {
-            UserName = name,
+            UserName = NormalizeUserName(name),
             Name = name,
             Email = email,
-            NormalizedEmail = email.ToUpper(),
             Address = adres,
             PhoneNumber = phoneNumber,
             MembershipLevel = membershipLevel,
@@ -55,9 +54,7 @@ public class AuthService
 
         IdentityResult result = await _userManager.CreateAsync(user, password);
 
-        return result.Succeeded
-            ? password
-            : null;
+        return new Tuple<string, IdentityResult>(password, result);
     }
 
     private string GeneratePassword()
@@ -90,5 +87,10 @@ public class AuthService
         passwordCharacters = passwordCharacters.OrderBy(c => random.Next()).ToList();
 
         return new string(passwordCharacters.ToArray());
+    }
+
+    private string NormalizeUserName(string name)
+    {
+        return name.Replace(' ', '_');
     }
 }
