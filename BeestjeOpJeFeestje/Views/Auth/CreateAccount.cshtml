@@ -1,0 +1,46 @@
+﻿@model CreateAccountViewModel
+
+@if (TempData["Password"] != null)
+{
+    <div class="alert alert-success">
+        Het account is aangemaakt met wachtwoord: <strong>@TempData["Password"]</strong>
+    </div>
+}
+
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <form asp-action="CreateAccount" method="post">
+            @Html.AntiForgeryToken()
+
+            <h1>Nieuw account aanmaken</h1>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control" asp-for="Name"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">E-mail:</label>
+                <input type="text" class="form-control" asp-for="Email"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Adres:</label>
+                <input type="text" class="form-control" asp-for="Address"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Telefoonnummer:</label>
+                <input type="text" class="form-control" asp-for="PhoneNumber"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Account aanmaken</button>
+        </form>
+    </div>
+</div>

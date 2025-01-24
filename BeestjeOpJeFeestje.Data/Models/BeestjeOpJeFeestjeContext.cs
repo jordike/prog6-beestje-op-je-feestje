@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeestjeOpJeFeestje.Data.Models
 {
-    public class BeestjeOpJeFeestjeContext : IdentityDbContext
+    public class BeestjeOpJeFeestjeContext : IdentityDbContext<Account>
     {
         public DbSet<Animal> Animals { get; set; } = null!;
         public DbSet<Booking> Bookings { get; set; } = null!;

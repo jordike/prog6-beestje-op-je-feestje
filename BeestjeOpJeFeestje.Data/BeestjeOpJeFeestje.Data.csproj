@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+      <PackageReference Include="EntityFramework" Version="6.5.1" />
       <PackageReference Include="Google.OrTools" Version="9.11.4210" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
