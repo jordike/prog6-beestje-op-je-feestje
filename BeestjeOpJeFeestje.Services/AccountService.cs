@@ -30,6 +30,11 @@ public class AccountService
         return await _userManager.FindByIdAsync(id);
     }
 
+    public async Task DeleteUser(Account account)
+    {
+        await _userManager.DeleteAsync(account);
+    }
+
     public async Task<Tuple<string, IdentityResult>> CreateUser(string name, string email, string adres, string phoneNumber, MembershipLevel membershipLevel)
     {
         Account user = new Account

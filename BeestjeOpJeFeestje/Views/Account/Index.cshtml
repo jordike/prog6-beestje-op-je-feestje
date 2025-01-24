@@ -1,5 +1,9 @@
 ﻿@model List<Account>
 
+<a class="btn btn-primary mb-3" asp-action="Create">
+    Nieuw account
+</a>
+
 <table class="table table-responsive table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -24,6 +28,6 @@
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@account.Id">Verwijderen</a>
                 </td>
             </tr>
-        })
+        }
     </tbody>
 </table>

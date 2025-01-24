@@ -10,7 +10,7 @@ namespace BeestjeOpJeFeestje.Controllers;
 [Authorize]
 public class AccountController : Controller
 {
-    private AccountService _accountService;
+    private readonly AccountService _accountService;
 
     public AccountController(UserManager<Account> userManager)
     {
@@ -29,6 +29,20 @@ public class AccountController : Controller
         Account? account = await _accountService.GetUserById(id);
 
         return View(account);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeletePost(string id)
+    {
+        Account? account = await _accountService.GetUserById(id);
+
+        if (account is null)
+            return RedirectToAction("Index");
+
+        await _accountService.DeleteUser(account);
+
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> Edit(string id)
