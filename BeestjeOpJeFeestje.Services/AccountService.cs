@@ -20,6 +20,16 @@ public class AccountService
         _userManager = userManager;
     }
 
+    public List<Account> GetAllUsers()
+    {
+        return _userManager.Users.ToList();
+    }
+
+    public async Task<Account?> GetUserById(string id)
+    {
+        return await _userManager.FindByIdAsync(id);
+    }
+
     public async Task<Tuple<string, IdentityResult>> CreateUser(string name, string email, string adres, string phoneNumber, MembershipLevel membershipLevel)
     {
         Account user = new Account

@@ -1,11 +1,13 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels;
 using BeestjeOpJeFeestje.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
 
+[Authorize]
 public class AccountController : Controller
 {
     private AccountService _accountService;
@@ -17,12 +19,23 @@ public class AccountController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        List<Account> accounts = _accountService.GetAllUsers();
+
+        return View(accounts);
     }
 
-    public IActionResult Delete()
+    public async Task<IActionResult> Delete(string id)
     {
-        return View();
+        Account? account = await _accountService.GetUserById(id);
+
+        return View(account);
+    }
+
+    public async Task<IActionResult> Edit(string id)
+    {
+        Account? account = await _accountService.GetUserById(id);
+
+        return View(account);
     }
 
     public IActionResult Create()
