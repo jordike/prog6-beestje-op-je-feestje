@@ -13,6 +13,7 @@ public class Program
         builder.Services.Configure<IdentityOptions>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
+            options.User.RequireUniqueEmail = true;
         });
 
         // Add services to the container.

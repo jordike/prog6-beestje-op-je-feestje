@@ -46,6 +46,7 @@ public class AuthService
             UserName = name,
             Name = name,
             Email = email,
+            NormalizedEmail = email.ToUpper(),
             Address = adres,
             PhoneNumber = phoneNumber,
             MembershipLevel = membershipLevel,

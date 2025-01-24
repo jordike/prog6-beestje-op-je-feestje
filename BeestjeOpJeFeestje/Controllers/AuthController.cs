@@ -30,10 +30,17 @@ public class AuthController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Login(LoginViewModel viewModel)
     {
-        if (ModelState.IsValid && await _authService.Login(viewModel.Email, viewModel.Password))
-            return RedirectToAction("Index", "Home");
+        if (!ModelState.IsValid)
+            return View(viewModel);
 
-        return View(viewModel);
+        if (!await _authService.Login(viewModel.Email, viewModel.Password))
+        {
+            TempData["Error"] = "Het e-mailadres of wachtwoord is onjuist.";
+
+            return View(viewModel);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<IActionResult> Logout()

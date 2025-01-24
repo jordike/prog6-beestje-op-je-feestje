@@ -1,14 +1,14 @@
 ﻿@model CreateAccountViewModel
 
-@if (TempData["Password"] != null)
-{
-    <div class="alert alert-success">
-        Het account is aangemaakt met wachtwoord: <strong>@TempData["Password"]</strong>
-    </div>
-}
-
 <div class="row">
     <div class="col-12 col-md-6 col-lg-4">
+        @if (TempData["Password"] != null)
+        {
+            <div class="alert alert-success">
+                Het account is aangemaakt met wachtwoord: <strong>@TempData["Password"]</strong>
+            </div>
+        }
+
         <form asp-action="CreateAccount" method="post">
             @Html.AntiForgeryToken()
 
