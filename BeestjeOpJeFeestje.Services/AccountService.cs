@@ -1,12 +1,11 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace BeestjeOpJeFeestje.Services.Auth;
+namespace BeestjeOpJeFeestje.Services;
 
-public class AuthService
+public class AccountService
 {
     private readonly UserManager<Account> _userManager;
-    private readonly SignInManager<Account> _signInManager;
 
     // This is a string containing all the characters that can be used in a password.
     // This is used to generate a random password for the user.
@@ -16,27 +15,9 @@ public class AuthService
     private const int NonAlphaNumericCharactersLength = 2;
     private const int AlphaNumericCharactersLength = 6;
 
-    public AuthService(UserManager<Account> userManager, SignInManager<Account> signInManager)
+    public AccountService(UserManager<Account> userManager)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
-    }
-
-    public async Task<bool> Login(string email, string password)
-    {
-        Account? user = await _userManager.FindByEmailAsync(email);
-
-        if (user == null)
-            return false;
-
-        SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
-
-        return result.Succeeded;
-    }
-
-    public async Task Logout()
-    {
-        await _signInManager.SignOutAsync();
     }
 
     public async Task<Tuple<string, IdentityResult>> CreateUser(string name, string email, string adres, string phoneNumber, MembershipLevel membershipLevel)

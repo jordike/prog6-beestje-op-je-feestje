@@ -1,6 +1,6 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels;
-using BeestjeOpJeFeestje.Services.Auth;
+using BeestjeOpJeFeestje.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,31 +48,5 @@ public class AuthController : Controller
         await _authService.Logout();
 
         return RedirectToAction("Index", "Home");
-    }
-
-    public IActionResult CreateAccount()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateAccount(CreateAccountViewModel viewModel)
-    {
-        if (!ModelState.IsValid)
-            return View(viewModel);
-
-        Tuple<string, IdentityResult> result = await _authService.CreateUser(viewModel.Name, viewModel.Email, viewModel.Address, viewModel.PhoneNumber, viewModel.MembershipLevel);
-
-        if (!result.Item2.Succeeded)
-        {
-            TempData["Error"] = string.Join('\n', result.Item2.Errors.Select(error => error.Description));
-
-            return View(viewModel);
-        }
-
-        TempData["Password"] = result.Item1;
-
-        return RedirectToAction("CreateAccount");
     }
 }
