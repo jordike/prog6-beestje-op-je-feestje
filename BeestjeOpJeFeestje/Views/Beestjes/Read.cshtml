@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Animal
+
 @{
+    ViewData["Title"] = "Beestje Bekijken";
+    List<Booking>? bookings = ViewData["bookings"] as List<Booking>;
 }
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Beestje Bekijken</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">@Model.Name</h3>
+            <p><strong>Type:</strong> @Model.Type</p>
+            <p><strong>Prijs:</strong> € @Model.Price.ToString("F2")</p>
+            <p><img src="@Model.ImageURL" alt="@Model.Name" class="img-fluid" style="max-width: 300px;"></p>
+        </div>
+    </div>
+
+    @if (bookings != null && bookings.Any())
+    {
+        <h4 class="mb-3">Boekingen:</h4>
+        <ul class="list-group">
+            @foreach (var booking in bookings)
+            {
+                <li class="list-group-item">
+                    <p><strong>Id:</strong> @booking.Id</p>
+                    <p><strong>Datum:</strong> @booking.Date.ToString("dd-MM-yyyy")</p>
+                    <p><strong>Naam:</strong> @booking.ContactName</p>
+                    <p><strong>Adres:</strong> @booking.ContactAddress</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">Er zijn geen boekingen voor dit beestje.</p>
+    }
+
+    <div class="text-center mt-4">
+        <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id">Aanpassen</a>
+        <a class="btn btn-secondary" asp-action="Index">Terug</a>
+    </div>
+</div>

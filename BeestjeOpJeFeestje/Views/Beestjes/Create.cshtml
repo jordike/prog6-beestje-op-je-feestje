@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Animal
+
 @{
+    ViewData["Title"] = "Beestje Aanmaken";
 }
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Beestje Aanmaken</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Name" class="form-label">Naam</label>
+            <input asp-for="@Model.Name" class="form-control" placeholder="Voer de naam van het beestje in" required />
+            <div class="invalid-feedback">Vul een naam in.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Type" class="form-label">Type</label>
+            <input asp-for="@Model.Type" class="form-control" placeholder="Voer het type van het beestje in" required />
+            <div class="invalid-feedback">Vul een type in.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Price" class="form-label">Prijs</label>
+            <input asp-for="@Model.Price" class="form-control" placeholder="Voer de prijs in (€)" type="number" step="0.01" required />
+            <div class="invalid-feedback">Vul een geldige prijs in.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.ImageURL" class="form-label">Afbeelding URL</label>
+            <input asp-for="@Model.ImageURL" class="form-control" placeholder="Voer de URL van de afbeelding in" required />
+            <div class="invalid-feedback">Vul een geldige URL in.</div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">Opslaan</button>
+            <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
+        </div>
+    </form>
+</div>

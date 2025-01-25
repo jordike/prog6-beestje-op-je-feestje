@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Animal
+
 @{
+    ViewData["Title"] = "Beestje Verwijderen";
 }
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Beestje Verwijderen</h1>
+
+    <div class="alert alert-danger text-center" role="alert">
+        Weet je zeker dat je het beestje <strong>@Model.Name</strong> wilt verwijderen?
+        <br />
+        <strong>Dit kan niet teruggedraaid worden!</strong>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">@Model.Name</h3>
+            <p><strong>Type:</strong> @Model.Type</p>
+            <p><strong>Prijs:</strong> € @Model.Price.ToString("F2")</p>
+            <p><img src="@Model.ImageURL" alt="@Model.Name" class="img-fluid" style="max-width: 300px;"></p>
+        </div>
+    </div>
+
+    <form method="post" class="text-center">
+        <input type="hidden" asp-for="Id" />
+
+        <button class="btn btn-danger" type="submit">Ja, Verwijderen</button>
+        <a class="btn btn-secondary" asp-action="Index">Nee, Annuleren</a>
+    </form>
+</div>
