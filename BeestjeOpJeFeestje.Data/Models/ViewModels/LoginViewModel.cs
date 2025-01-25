@@ -13,4 +13,6 @@ public class LoginViewModel
     [MaxLength(50)]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+
+    public string? ReturnUrl { get; set; }
 }

@@ -18,9 +18,12 @@ public class AuthController : Controller
     }
 
     [AllowAnonymous]
-    public IActionResult Login()
+    public IActionResult Login(string? returnUrl)
     {
-        LoginViewModel viewModel = new LoginViewModel();
+        LoginViewModel viewModel = new LoginViewModel()
+        {
+            ReturnUrl = returnUrl
+        };
 
         return View(viewModel);
     }
@@ -40,7 +43,10 @@ public class AuthController : Controller
             return View(viewModel);
         }
 
-        return RedirectToAction("Index", "Home");
+        if (string.IsNullOrEmpty(viewModel.ReturnUrl))
+            return RedirectToAction("Index", "Home");
+
+        return Redirect(viewModel.ReturnUrl);
     }
 
     public async Task<IActionResult> Logout()

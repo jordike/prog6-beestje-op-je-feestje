@@ -1,6 +1,5 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
@@ -74,17 +73,23 @@ public class BookingController : Controller
         return RedirectToAction("EnterInformation", viewModel.Booking);
     }
 
-    public IActionResult EnterInformation(Booking booking)
+    public IActionResult EnterInformation(Booking booking, int? bookingId)
     {
+        if (bookingId != null)
+        {
+            Booking _booking = _context.Bookings.FirstOrDefault(_booking => _booking.Id == bookingId);
+
+            if (_booking != null)
+                booking = _booking;
+        }
+
         return View(booking);
     }
 
     [HttpPost]
     public IActionResult StoreInformation(Booking booking)
     {
-        if (!ModelState.IsValid)
-            return RedirectToAction("EnterInformation", booking);
-
+        _context.Bookings.Update(booking);
         _context.SaveChanges();
 
         return RedirectToAction("BookingOverview");
@@ -97,9 +102,6 @@ public class BookingController : Controller
 
     public IActionResult BookingConfirmed(Booking booking)
     {
-        if (!ModelState.IsValid)
-            return RedirectToAction("BookingOverview", booking);
-
         booking.IsConfirmed = true;
 
         _context.SaveChanges();
@@ -110,7 +112,7 @@ public class BookingController : Controller
     private bool IsAnimalAvailable(Animal animal, DateTime date)
     {
         return !_context.Bookings
-            .Where(booking => booking.Date == date)
+            .Where(booking => booking.Date == date && booking.IsConfirmed)
             .SelectMany(booking => booking.Animals)
             .Contains(animal);
     }
