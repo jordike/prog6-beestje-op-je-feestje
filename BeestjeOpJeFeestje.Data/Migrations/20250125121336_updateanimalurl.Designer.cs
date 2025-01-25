@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeestjeOpJeFeestje.Migrations
 {
     [DbContext(typeof(BeestjeOpJeFeestjeContext))]
-    [Migration("20250125113320_beestjetablefix")]
-    partial class beestjetablefix
+    [Migration("20250125121336_updateanimalurl")]
+    partial class updateanimalurl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,7 +137,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 1,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Aap.png",
+                            ImageURL = "/img/Aap.png",
                             Name = "Aap",
                             Price = 50f,
                             Type = "Jungle"
@@ -145,7 +145,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 2,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Olifant.png",
+                            ImageURL = "/img/Olifant.png",
                             Name = "Olifant",
                             Price = 200f,
                             Type = "Jungle"
@@ -153,7 +153,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 3,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Zebra.png",
+                            ImageURL = "/img/Zebra.png",
                             Name = "Zebra",
                             Price = 150f,
                             Type = "Jungle"
@@ -161,7 +161,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 4,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Leeuw.png",
+                            ImageURL = "/img/Leeuw.png",
                             Name = "Leeuw",
                             Price = 300f,
                             Type = "Jungle"
@@ -169,7 +169,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 5,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Hond.png",
+                            ImageURL = "/img/Hond.png",
                             Name = "Hond",
                             Price = 30f,
                             Type = "Boerderij"
@@ -177,7 +177,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 6,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Ezel.png",
+                            ImageURL = "/img/Ezel.png",
                             Name = "Ezel",
                             Price = 60f,
                             Type = "Boerderij"
@@ -185,7 +185,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 7,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Koe.png",
+                            ImageURL = "/img/Koe.png",
                             Name = "Koe",
                             Price = 120f,
                             Type = "Boerderij"
@@ -193,7 +193,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 8,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Eend.png",
+                            ImageURL = "/img/Eend.png",
                             Name = "Eend",
                             Price = 20f,
                             Type = "Boerderij"
@@ -201,7 +201,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 9,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Kuiken.png",
+                            ImageURL = "/img/Kuiken.png",
                             Name = "Kuiken",
                             Price = 10f,
                             Type = "Boerderij"
@@ -209,7 +209,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 10,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Pinguin.png",
+                            ImageURL = "/img/Pinguin.png",
                             Name = "Pinguïn",
                             Price = 80f,
                             Type = "Sneeuw"
@@ -217,7 +217,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 11,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\IJsbeer.png",
+                            ImageURL = "/img/IJsbeer.png",
                             Name = "IJsbeer",
                             Price = 250f,
                             Type = "Sneeuw"
@@ -225,7 +225,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 12,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Zeehond.png",
+                            ImageURL = "/img/Zeehond.png",
                             Name = "Zeehond",
                             Price = 100f,
                             Type = "Sneeuw"
@@ -233,7 +233,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 13,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Kameel.png",
+                            ImageURL = "/img/Kameel.png",
                             Name = "Kameel",
                             Price = 180f,
                             Type = "Woestijn"
@@ -241,7 +241,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 14,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Slang.png",
+                            ImageURL = "/img/Slang.png",
                             Name = "Slang",
                             Price = 70f,
                             Type = "Woestijn"
@@ -249,7 +249,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 15,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\T-Rex.png",
+                            ImageURL = "/img/T-Rex.png",
                             Name = "T-Rex",
                             Price = 1000f,
                             Type = "VIP"
@@ -257,7 +257,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         new
                         {
                             Id = 16,
-                            ImageURL = "BeestjeOpJeFeestje\\wwwroot\\img\\Unicorn.png",
+                            ImageURL = "/img/Unicorn.png",
                             Name = "Unicorn",
                             Price = 1200f,
                             Type = "VIP"
