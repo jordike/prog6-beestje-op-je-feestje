@@ -1,4 +1,5 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
+using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers
@@ -6,16 +7,15 @@ namespace BeestjeOpJeFeestje.Controllers
     public class BeestjesController : Controller
     {
         // TODO: add authorization to this controller to prevent unauthorized access. only Owners of the farm should be able to access this controller.
-        public BeestjeOpJeFeestjeContext _context;
-
+        private readonly BeestjeService _beestjeService;
         public BeestjesController(BeestjeOpJeFeestjeContext context)
         {
-            _context = context;
+            _beestjeService = new BeestjeService(context);
         }
 
         public IActionResult Index()
         {
-            var animals = GetAnimals();
+            var animals = _beestjeService.GetAnimals();
             return View(animals);
         }
 
@@ -27,16 +27,15 @@ namespace BeestjeOpJeFeestje.Controllers
         [HttpPost]
         public IActionResult Create(Animal animal)
         {
-            _context.Animals.Add(animal);
-            _context.SaveChanges();
+            _beestjeService.CreateAnimal(animal);
             return RedirectToAction("Index");
         }
 
         public IActionResult Read(int id)
         {
-            Animal animal = GetAnimal(id);
+            Animal animal = _beestjeService.GetAnimal(id);
 
-            List<Booking>? bookings = GetAnimalBookings(animal);
+            List<Booking>? bookings = _beestjeService.GetAnimalBookings(animal);
 
             ViewData["bookings"] = bookings;
             return View(animal);
@@ -44,48 +43,28 @@ namespace BeestjeOpJeFeestje.Controllers
 
         public IActionResult Update(int id)
         {
-            Animal animal = GetAnimal(id);
+            Animal animal = _beestjeService.GetAnimal(id);
             return View(animal);
         }
 
         [HttpPost]
         public IActionResult Update(Animal animal)
         {
-            _context.Animals.Update(animal);
-            _context.SaveChanges();
+            _beestjeService.UpdateAnimal(animal);
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id) 
         {
-            Animal animal = GetAnimal(id);
+            Animal animal = _beestjeService.GetAnimal(id);
             return View(animal);
         }
 
         [HttpPost]
         public IActionResult Delete(Animal animal)
         {
-            _context.Animals.Remove(animal);
-            _context.SaveChanges();
+            _beestjeService.DeleteAnimal(animal);
             return RedirectToAction("Index");
-        }
-
-        public List<Animal> GetAnimals() 
-        {
-            List<Animal> animals = _context.Animals.ToList();
-            return animals;
-        }
-
-        public Animal GetAnimal(int id)
-        {
-            Animal animal = _context.Animals.FirstOrDefault(a => a.Id == id);
-            return animal;
-        }
-
-        public List<Booking> GetAnimalBookings(Animal animal)
-        {
-            List<Booking> bookings = _context.Bookings.Where(b => b.animals.Contains(animal)).ToList();
-            return bookings;
         }
     }
 }
