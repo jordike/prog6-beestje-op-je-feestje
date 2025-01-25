@@ -1,12 +1,14 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers
 {
+    [Authorize(Roles = "Owner")]
+
     public class BeestjesController : Controller
     {
-        // TODO: add authorization to this controller to prevent unauthorized access. only Owners of the farm should be able to access this controller.
         private readonly BeestjeService _beestjeService;
         public BeestjesController(BeestjeOpJeFeestjeContext context)
         {
