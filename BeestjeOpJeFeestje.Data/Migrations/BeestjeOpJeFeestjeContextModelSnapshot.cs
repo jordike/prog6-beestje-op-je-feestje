@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BeestjeOpJeFeestje.Migrations
+namespace BeestjeOpJeFeestje.Data.Migrations
 {
     [DbContext(typeof(BeestjeOpJeFeestjeContext))]
     partial class BeestjeOpJeFeestjeContextModelSnapshot : ModelSnapshot
@@ -120,9 +120,8 @@ namespace BeestjeOpJeFeestje.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -137,7 +136,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Aap.png",
                             Name = "Aap",
                             Price = 50f,
-                            Type = "Jungle"
+                            Type = 0
                         },
                         new
                         {
@@ -145,7 +144,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Olifant.png",
                             Name = "Olifant",
                             Price = 200f,
-                            Type = "Jungle"
+                            Type = 0
                         },
                         new
                         {
@@ -153,7 +152,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Zebra.png",
                             Name = "Zebra",
                             Price = 150f,
-                            Type = "Jungle"
+                            Type = 0
                         },
                         new
                         {
@@ -161,7 +160,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Leeuw.png",
                             Name = "Leeuw",
                             Price = 300f,
-                            Type = "Jungle"
+                            Type = 0
                         },
                         new
                         {
@@ -169,7 +168,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Hond.png",
                             Name = "Hond",
                             Price = 30f,
-                            Type = "Boerderij"
+                            Type = 1
                         },
                         new
                         {
@@ -177,7 +176,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Ezel.png",
                             Name = "Ezel",
                             Price = 60f,
-                            Type = "Boerderij"
+                            Type = 1
                         },
                         new
                         {
@@ -185,7 +184,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Koe.png",
                             Name = "Koe",
                             Price = 120f,
-                            Type = "Boerderij"
+                            Type = 1
                         },
                         new
                         {
@@ -193,7 +192,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Eend.png",
                             Name = "Eend",
                             Price = 20f,
-                            Type = "Boerderij"
+                            Type = 1
                         },
                         new
                         {
@@ -201,7 +200,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Kuiken.png",
                             Name = "Kuiken",
                             Price = 10f,
-                            Type = "Boerderij"
+                            Type = 1
                         },
                         new
                         {
@@ -209,7 +208,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Pinguin.png",
                             Name = "Pinguïn",
                             Price = 80f,
-                            Type = "Sneeuw"
+                            Type = 2
                         },
                         new
                         {
@@ -217,7 +216,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/IJsbeer.png",
                             Name = "IJsbeer",
                             Price = 250f,
-                            Type = "Sneeuw"
+                            Type = 2
                         },
                         new
                         {
@@ -225,7 +224,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Zeehond.png",
                             Name = "Zeehond",
                             Price = 100f,
-                            Type = "Sneeuw"
+                            Type = 2
                         },
                         new
                         {
@@ -233,7 +232,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Kameel.png",
                             Name = "Kameel",
                             Price = 180f,
-                            Type = "Woestijn"
+                            Type = 3
                         },
                         new
                         {
@@ -241,7 +240,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Slang.png",
                             Name = "Slang",
                             Price = 70f,
-                            Type = "Woestijn"
+                            Type = 3
                         },
                         new
                         {
@@ -249,7 +248,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/T-Rex.png",
                             Name = "T-Rex",
                             Price = 1000f,
-                            Type = "VIP"
+                            Type = 4
                         },
                         new
                         {
@@ -257,7 +256,7 @@ namespace BeestjeOpJeFeestje.Migrations
                             ImageURL = "/img/Unicorn.png",
                             Name = "Unicorn",
                             Price = 1200f,
-                            Type = "VIP"
+                            Type = 4
                         });
                 });
 

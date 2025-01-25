@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Beestje Aanmaken";
+    Array Types = ViewData["AnimalTypes"] as Array;
 }
 
 <div class="container my-5">
@@ -16,8 +17,13 @@
 
         <div class="form-group">
             <label asp-for="@Model.Type" class="form-label">Type</label>
-            <input asp-for="@Model.Type" class="form-control" placeholder="Voer het type van het beestje in" required />
-            <div class="invalid-feedback">Vul een type in.</div>
+            <select asp-for="@Model.Type" class="form-select">
+                @foreach (var type in Types)
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>            
+            <div class="invalid-feedback">Kies een type.</div>
         </div>
 
         <div class="form-group">

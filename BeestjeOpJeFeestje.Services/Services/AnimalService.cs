@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace BeestjeOpJeFeestje.Services.Services;
 
-public class BeestjeService
+public class AnimalService
 {
     private readonly BeestjeOpJeFeestjeContext _context;
-    public BeestjeService(BeestjeOpJeFeestjeContext context)
+    public AnimalService(BeestjeOpJeFeestjeContext context)
     {
         _context = context; 
     }
 
     public List<Animal> GetAnimals()
     {
-        List<Animal> animals = _context.Animals.ToList();
+        var animals = _context.Animals.ToList();
 
         return animals;
     }
@@ -29,11 +29,16 @@ public class BeestjeService
         return animal;
     }
 
-    public List<Booking> GetAnimalBookings(Animal animal)
+    public List<Booking>? GetAnimalBookings(Animal animal)
     {
-        List<Booking> bookings = _context.Bookings.Where(b => b.animals.Contains(animal)).ToList();
+        List<Booking>? bookings = _context.Bookings.Where(b => b.animals.Contains(animal)).ToList();
 
         return bookings;
+    }
+
+    public Array getAnimalTypes()
+    {
+        return Enum.GetValues(typeof(AnimalTypes));
     }
 
     public void CreateAnimal(Animal animal)

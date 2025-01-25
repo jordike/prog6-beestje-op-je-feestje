@@ -7,22 +7,26 @@ namespace BeestjeOpJeFeestje.Controllers
 {
     [Authorize(Roles = "Admin")]
 
-    public class BeestjesController : Controller
+    public class AnimalController : Controller
     {
-        private readonly BeestjeService _beestjeService;
-        public BeestjesController(BeestjeOpJeFeestjeContext context)
+        private readonly AnimalService _beestjeService;
+        public AnimalController(BeestjeOpJeFeestjeContext context)
         {
-            _beestjeService = new BeestjeService(context);
+            _beestjeService = new AnimalService(context);
         }
 
         public IActionResult Index()
         {
             var animals = _beestjeService.GetAnimals();
+
             return View(animals);
         }
 
         public IActionResult Create()
         {
+            var animalTypes = _beestjeService.getAnimalTypes();
+
+            ViewData["animalTypes"] = animalTypes;
             return View(new Animal());
         }
 
@@ -46,6 +50,10 @@ namespace BeestjeOpJeFeestje.Controllers
         public IActionResult Update(int id)
         {
             Animal animal = _beestjeService.GetAnimal(id);
+
+            var animalTypes = _beestjeService.getAnimalTypes();
+
+            ViewData["animalTypes"] = animalTypes;
             return View(animal);
         }
 
@@ -59,6 +67,7 @@ namespace BeestjeOpJeFeestje.Controllers
         public IActionResult Delete(int id) 
         {
             Animal animal = _beestjeService.GetAnimal(id);
+
             return View(animal);
         }
 
