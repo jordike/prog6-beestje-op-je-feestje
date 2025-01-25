@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers
 {
-    [Authorize(Roles = "Owner")]
+    [Authorize(Roles = "Admin")]
 
     public class BeestjesController : Controller
     {
