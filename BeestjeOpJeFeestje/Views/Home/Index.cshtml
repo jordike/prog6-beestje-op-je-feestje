@@ -14,7 +14,7 @@
             </p>
         </header>
 
-        <form>
+        <form asp-controller="Booking" asp-action="StartBooking" method="post">
             <input type="date" asp-for="Date" class="form-control mb-3" />
             
             <button type="submit" class="btn btn-primary">Boeken</button>

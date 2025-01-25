@@ -39,6 +39,10 @@
     <ProjectReference Include="..\BeestjeOpJeFeestje.Services\BeestjeOpJeFeestje.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\NewFolder\" />
+  </ItemGroup>
+
     
 
 </Project>

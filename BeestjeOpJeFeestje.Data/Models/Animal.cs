@@ -17,5 +17,7 @@ namespace BeestjeOpJeFeestje.Data.Models
         public float Price { get; set; }
         [Required]
         public string ImageURL { get; set; }
+
+        public virtual List<Booking> Bookings { get; set; }
     }
 }

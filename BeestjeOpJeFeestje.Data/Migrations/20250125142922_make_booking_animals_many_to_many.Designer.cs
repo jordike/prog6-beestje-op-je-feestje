@@ -4,16 +4,19 @@ using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BeestjeOpJeFeestje.Data.Migrations
+namespace BeestjeOpJeFeestje.Migrations
 {
     [DbContext(typeof(BeestjeOpJeFeestjeContext))]
-    partial class BeestjeOpJeFeestjeContextModelSnapshot : ModelSnapshot
+    [Migration("20250125142922_make_booking_animals_many_to_many")]
+    partial class make_booking_animals_many_to_many
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
