@@ -127,6 +127,20 @@ namespace BeestjeOpJeFeestje.Tests
         }
 
         [Test]
+        public async Task UpdateUser_ShouldCallUpdateAsync()
+        {
+            // Arrange
+            Account user = new Account { UserName = "user1" };
+            _userManagerMock.Setup(x => x.UpdateAsync(user)).ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            await _accountService.UpdateUser(user);
+
+            // Assert
+            _userManagerMock.Verify(x => x.UpdateAsync(user), Times.Once);
+        }
+
+        [Test]
         public async Task AssignRole_ShouldCallAddToRoleAsync()
         {
             // Arrange
