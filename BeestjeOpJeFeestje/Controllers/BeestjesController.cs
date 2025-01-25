@@ -1,4 +1,4 @@
-﻿using BeestjeOpJeFeestje.Models;
+﻿using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers
