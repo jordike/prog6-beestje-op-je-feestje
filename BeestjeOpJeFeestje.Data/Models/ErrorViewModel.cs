@@ -1,4 +1,4 @@
-namespace BeestjeOpJeFeestje.Models;
+namespace BeestjeOpJeFeestje.Data.Models;
 
 public class ErrorViewModel
 {
