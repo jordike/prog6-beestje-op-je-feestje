@@ -1,4 +1,5 @@
-﻿using BeestjeOpJeFeestje.Data.Models;
+﻿using System.Data.Entity;
+using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +71,7 @@ public class BookingController : Controller
 
         _context.SaveChanges();
 
-        return RedirectToAction("EnterInformation", viewModel.Booking);
+        return RedirectToAction("EnterInformation", booking);
     }
 
     public IActionResult EnterInformation(Booking booking, int? bookingId)
@@ -89,22 +90,46 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult StoreInformation(Booking booking)
     {
-        _context.Bookings.Update(booking);
+        Booking? _booking = _context.Bookings.Find(booking.Id);
+
+        if (_booking == null)
+            return RedirectToAction("SelectAnimals", booking);
+
+        _booking.ContactName = booking.ContactName;
+        _booking.ContactEmail = booking.ContactEmail;
+        _booking.ContactPhoneNumber = booking.ContactPhoneNumber;
+        _booking.ContactAddress = booking.ContactAddress;
         _context.SaveChanges();
 
-        return RedirectToAction("BookingOverview");
+        return RedirectToAction("BookingOverview", booking);
     }
 
     public IActionResult BookingOverview(Booking booking)
     {
-        return View(booking);
+        Booking? _booking = _context.Bookings
+            .Include(b => b.Animals)
+            .FirstOrDefault(b => b.Id == booking.Id);
+
+        if (_booking == null)
+            return RedirectToAction("EnterInformation", booking);
+
+        // Ensure Animals collection is loaded
+        _context.Entry(_booking).Collection(b => b.Animals).Load();
+
+        return View(_booking);
     }
 
     public IActionResult BookingConfirmed(Booking booking)
     {
-        booking.IsConfirmed = true;
+        Booking? _booking = _context.Bookings.Find(booking.Id);
 
+        if (_booking == null)
+            return RedirectToAction("BookingOverview", booking);
+
+        _booking.IsConfirmed = true;
         _context.SaveChanges();
+
+        TempData["Success"] = "Uw boeking is geplaatst";
 
         return RedirectToAction("Index", "Home");
     }

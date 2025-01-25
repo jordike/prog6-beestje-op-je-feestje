@@ -1,1 +1,66 @@
-﻿
+﻿@model Booking
+
+<partial name="_BookingStepProgress" model="3" />
+
+<form asp-action="BookingConfirmed" method="post">
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="row mt-4">
+        <div class="col-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Stap 3 - controleer je gegevens</h4>
+                </div>
+
+                <div class="card-body">
+                    <section>
+                        <h5>Contactgegevens</h5>
+
+                        <p>Naam: @Model.ContactName</p>
+                        <p>Email: @Model.ContactEmail</p>
+                        <p>Telefoonnummer: @Model.ContactPhoneNumber</p>
+                        <p>Adres: @Model.ContactAddress</p>
+                    </section>
+
+                    <section>
+                        <h5>Prijs / korting</h5>
+                        
+                        <ul>
+                            @foreach (Animal animal in Model.Animals)
+                            {
+                                <li>@animal.Name: @animal.Price $</li>
+                            }
+                        </ul>
+                    </section>
+                    
+                    <section>
+                        <strong>Totaal: @Model.Animals.Select(animal => animal.Price).Sum()</strong>
+                    </section>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Boeking bevestigen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Boeking</h4>
+                </div>
+
+                <div class="card-body">
+                    <p>Datum: @Model.Date.ToString("d-MM-yyyy")</p>
+
+                    <hr />
+
+                    <h5>Beestjes</h5>
+                    <p class="text-muted">Nog geen beestjes geselecteerd</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -6,6 +6,8 @@
 
 <form asp-action="StoreInformation" method="post">
     @Html.AntiForgeryToken()
+    
+    <input type="hidden" asp-for="@Model.Id" />
 
     <div class="row mt-4">
         <div class="col-10">

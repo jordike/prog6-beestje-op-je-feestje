@@ -13,6 +13,13 @@
                 een beestje bij jou op de stoep staat.
             </p>
         </header>
+        
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
 
         <form asp-controller="Booking" asp-action="StartBooking" method="post">
             <input type="date" asp-for="Date" class="form-control mb-3" />
