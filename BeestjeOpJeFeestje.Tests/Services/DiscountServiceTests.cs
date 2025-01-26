@@ -30,8 +30,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            Assert.IsTrue(discounts.ContainsKey("3 animals of the same type"));
-            Assert.AreEqual(10, discounts["3 animals of the same type"]);
+            Assert.IsTrue(discounts.ContainsKey("3 dieren van hetzelfde type"));
+            Assert.AreEqual(10, discounts["3 dieren van hetzelfde type"]);
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            if (discounts.ContainsKey("Animal named 'Duck'"))
+            if (discounts.ContainsKey("Dier genaamd 'Eend'"))
             {
-                Assert.AreEqual(50, discounts["Animal named 'Duck'"]);
+                Assert.AreEqual(50, discounts["Dier genaamd 'Eend'"]);
             }
         }
 
@@ -65,8 +65,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            Assert.IsTrue(discounts.ContainsKey("Booking on Monday or Tuesday"));
-            Assert.AreEqual(15, discounts["Booking on Monday or Tuesday"]);
+            Assert.IsTrue(discounts.ContainsKey("Boeking op maandag of dinsdag"));
+            Assert.AreEqual(15, discounts["Boeking op maandag of dinsdag"]);
         }
 
         [Test]
@@ -83,8 +83,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            Assert.IsTrue(discounts.ContainsKey("Animal name with letters 'A', 'B', 'C', etc."));
-            Assert.AreEqual(8, discounts["Animal name with letters 'A', 'B', 'C', etc."]); // H, O, N, D
+            Assert.IsTrue(discounts.ContainsKey("Diernaam met letters 'A', 'B', 'C', enz."));
+            Assert.AreEqual(8, discounts["Diernaam met letters 'A', 'B', 'C', enz."]); // H, O, N, D
         }
 
         [Test]
@@ -98,8 +98,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            Assert.IsTrue(discounts.ContainsKey("Membership card"));
-            Assert.AreEqual(10, discounts["Membership card"]);
+            Assert.IsTrue(discounts.ContainsKey("Lidmaatschapskaart"));
+            Assert.AreEqual(10, discounts["Lidmaatschapskaart"]);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
             Dictionary<string, int> discounts = _discountService.GetDiscounts(booking);
 
             // Assert
-            Assert.IsFalse(discounts.ContainsKey("Membership card"));
+            Assert.IsFalse(discounts.ContainsKey("Lidmaatschapskaart"));
         }
     }
 }

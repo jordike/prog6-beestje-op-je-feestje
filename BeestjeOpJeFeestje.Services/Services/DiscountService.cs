@@ -26,12 +26,12 @@ public class DiscountService
         if (!animalTypeGroups.Any(group => group.Count() >= 3))
             return;
 
-        discounts.Add("3 animals of the same type", 10);
+        discounts["3 dieren van hetzelfde type"] = 10;
     }
 
     private void ApplyDuckDiscount(List<Animal> animals, Dictionary<string, int> discounts)
     {
-        if (animals.All(a => a.Name != "Duck"))
+        if (animals.All(a => a.Name != "Eend"))
             return;
 
         Random random = new Random();
@@ -39,7 +39,7 @@ public class DiscountService
         if (random.Next(1, 7) != 1)
             return;
 
-        discounts["Animal named 'Duck'"] = 50;
+        discounts["Dier genaamd 'Eend'"] = 50;
     }
 
     private void ApplyBookingDayDiscount(Dictionary<string, int> discounts, DateTime bookingDate)
@@ -47,7 +47,7 @@ public class DiscountService
         if (bookingDate.DayOfWeek is not (DayOfWeek.Monday or DayOfWeek.Tuesday))
             return;
 
-        discounts["Booking on Monday or Tuesday"] = 15;
+        discounts["Boeking op maandag of dinsdag"] = 15;
     }
 
     private void ApplyNameLetterDiscount(List<Animal> animals, Dictionary<string, int> discounts)
@@ -67,7 +67,7 @@ public class DiscountService
             if (extraDiscount <= 0)
                 continue;
 
-            discounts[$"Animal name with letters 'A', 'B', 'C', etc."] = extraDiscount;
+            discounts["Diernaam met letters 'A', 'B', 'C', enz."] = extraDiscount;
         }
     }
 
@@ -76,6 +76,6 @@ public class DiscountService
         if (account.MembershipLevel == MembershipLevel.Geen)
             return;
 
-        discounts["Membership card"] = 10;
+        discounts["Lidmaatschapskaart"] = 10;
     }
 }
