@@ -54,7 +54,16 @@ public class BookingController : Controller
     public IActionResult StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
     {
         if (!ModelState.IsValid)
-            return RedirectToAction("SelectAnimals", viewModel.BookingId);
+        {
+            TempData["Error"] = string.Join("; ", ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage));
+
+            return RedirectToAction("SelectAnimals", new
+            {
+                id = viewModel.BookingId
+            });
+        }
 
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
         _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals);

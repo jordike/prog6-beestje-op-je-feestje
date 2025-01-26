@@ -12,7 +12,7 @@ public class NotBookingSnowAnimalsInSummerValidation : ValidationAttribute
         if (value is not List<AnimalViewModel> animals)
             return ValidationResult.Success;
 
-        bool hasSnowAnimal = animals.Any(animal => animal.Animal.Type == AnimalTypes.Sneeuw);
+        bool hasSnowAnimal = animals.Any(animal => animal.Animal.Type == AnimalTypes.Sneeuw && animal.IsSelected);
         bool isSummer = DateTime.Now.Month >= 6 && DateTime.Now.Month <= 8;
 
         if (hasSnowAnimal && isSummer)

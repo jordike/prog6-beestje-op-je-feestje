@@ -12,8 +12,8 @@ public class AllowedAnimalTypesValidation : ValidationAttribute
         if (value is not List<AnimalViewModel> animals)
             return ValidationResult.Success;
 
-        bool hasFarmAnimal = animals.Any(animal => animal.Animal.Type == AnimalTypes.Boerderij);
-        bool hasRestrictedAnimal = animals.Any(animal => animal.Animal.Name is "Leeuw" or "IJsbeer");
+        bool hasFarmAnimal = animals.Any(animal => animal.Animal.Type == AnimalTypes.Boerderij && animal.IsSelected);
+        bool hasRestrictedAnimal = animals.Any(animal => animal.Animal.Name is "Leeuw" or "IJsbeer" && animal.IsSelected);
 
         if (hasFarmAnimal && hasRestrictedAnimal)
             return new ValidationResult("Je mag geen beestje boeken van het type 'Leeuw' of 'IJsbeer' als je ook een beestje boekt van het type 'Boerderijdier'.");

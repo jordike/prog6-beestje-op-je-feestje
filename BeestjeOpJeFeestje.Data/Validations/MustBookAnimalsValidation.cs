@@ -10,7 +10,7 @@ public class MustBookAnimalsValidation : ValidationAttribute
     {
         List<AnimalViewModel>? animals = value as List<AnimalViewModel>;
 
-        if (animals.IsNullOrEmpty())
+        if (animals == null || animals.All(animal => !animal.IsSelected))
             return new ValidationResult("Je moet dieren selecteren om te kunnen boeken.");
 
         return ValidationResult.Success;

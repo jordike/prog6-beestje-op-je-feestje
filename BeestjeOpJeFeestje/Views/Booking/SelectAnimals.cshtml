@@ -8,6 +8,13 @@
     <input type="hidden" asp-for="@Model.BookingId" />
     <input type="hidden" asp-for="@Model.BookingDate" />
     
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+    
     <div asp-validation-summary="ModelOnly"></div>
     
     <div class="row mt-4">
