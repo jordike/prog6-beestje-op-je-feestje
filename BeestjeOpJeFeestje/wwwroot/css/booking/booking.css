@@ -14,6 +14,10 @@
     margin: auto;
 }
 
+.animal-image-small {
+    width: 30px;
+}
+
 .animal-not-available {
     background-color: #eeeeee;
 }

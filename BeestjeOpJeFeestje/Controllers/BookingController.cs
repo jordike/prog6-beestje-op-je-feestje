@@ -54,10 +54,15 @@ public class BookingController : Controller
     public IActionResult StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
     {
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
-        Booking? booking = _context.Bookings.Find(viewModel.Booking.Id);
+        Booking? booking = _context.Bookings
+            .Include(b => b.Animals)
+            .FirstOrDefault(b => b.Id == viewModel.Booking.Id);
 
         if (booking == null)
             return RedirectToAction("SelectAnimals", viewModel);
+
+        // Ensure Animals collection is loaded
+        _context.Entry(booking).Collection(b => b.Animals).Load();
 
         booking.Animals = new List<Animal>();
 
@@ -76,15 +81,17 @@ public class BookingController : Controller
 
     public IActionResult EnterInformation(Booking booking, int? bookingId)
     {
-        if (bookingId != null)
-        {
-            Booking _booking = _context.Bookings.FirstOrDefault(_booking => _booking.Id == bookingId);
+        Booking _booking = _context.Bookings
+            .Include(b => b.Animals)
+            .FirstOrDefault(_booking => _booking.Id == (bookingId ?? booking.Id));
 
-            if (_booking != null)
-                booking = _booking;
-        }
+        if (_booking == null)
+            return RedirectToAction("SelectAnimals", booking);
 
-        return View(booking);
+        // Ensure Animals collection is loaded
+        _context.Entry(_booking).Collection(b => b.Animals).Load();
+
+        return View(_booking);
     }
 
     [HttpPost]

@@ -1,5 +1,5 @@
 using BeestjeOpJeFeestje.Data.Models;
-using BeestjeOpJeFeestje.Services;
+using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 

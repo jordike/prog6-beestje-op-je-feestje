@@ -1,6 +1,6 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels;
-using BeestjeOpJeFeestje.Services;
+using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

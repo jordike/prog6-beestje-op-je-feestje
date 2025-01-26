@@ -1,7 +1,7 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace BeestjeOpJeFeestje.Services;
+namespace BeestjeOpJeFeestje.Services.Services;
 
 public class AccountService
 {
