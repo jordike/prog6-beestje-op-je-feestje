@@ -34,6 +34,11 @@ public class AuthService
 
     public async Task Logout()
     {
+        Account? user = await _userManager.GetUserAsync(_signInManager.Context.User);
+
+        if (user != null)
+            await _userManager.RemoveClaimsAsync(user, _signInManager.Context.User.Claims);
+
         await _signInManager.SignOutAsync();
     }
 }
