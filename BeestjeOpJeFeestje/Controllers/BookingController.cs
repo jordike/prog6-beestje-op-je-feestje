@@ -1,6 +1,6 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
-using BeestjeOpJeFeestje.Services;
+using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
