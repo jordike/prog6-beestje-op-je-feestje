@@ -1,0 +1,62 @@
+﻿@model ViewOwnBookingViewModel
+@{
+    ViewData["Title"] = "Boeking bekijken";
+}
+
+<div class="row">
+    <div class="col-10">
+        <div class="card">
+            <div class="card-header">
+                <h4>Boeking</h4>
+            </div>
+            <div class="card-body">
+                <section>
+                    <h5>Contactgegevens</h5>
+                    
+                    @if (Model.Booking.Account != null)
+                    {
+                        <p>Naam: @Model.Booking.Account.Name</p>
+                        <p>Email: @Model.Booking.Account.Email</p>
+                        <p>Telefoonnummer: @Model.Booking.Account.PhoneNumber</p>
+                        <p>Adres: @Model.Booking.Account.Address</p>
+                    }
+                    else
+                    {
+                        <p>Naam: @Model.Booking.ContactName</p>
+                        <p>Email: @Model.Booking.ContactEmail</p>
+                        <p>Telefoonnummer: @Model.Booking.ContactPhoneNumber</p>
+                        <p>Adres: @Model.Booking.ContactAddress</p>
+                    }
+                </section>
+                <section>
+                    <h5>Beestjes</h5>
+                    <ul>
+                        @foreach (Animal animal in Model.Booking.Animals)
+                        {
+                            <li>@animal.Name: @animal.Price $</li>
+                        }
+                    </ul>
+                </section>
+                @if (Model.Discounts != null)
+                {
+                    <section>
+                        <h5>Korting @Model.Discounts.Count</h5>
+                        <ul>
+                            @foreach (KeyValuePair<string, int> discount in Model.Discounts)
+                            {
+                                <li>@discount.Key: @(discount.Value) %</li>
+                            }
+                            <li>Totale korting: @(Model.TotalDiscount) % (max. 60%)</li>
+                        </ul>
+                    </section>
+                }
+                <section>
+                    <strong>Totaal: @Model.Price $</strong>
+                </section>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary" asp-action="Index">Terug naar overzicht</a>
+            </div>
+        </div>
+    </div>
+</div>

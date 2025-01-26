@@ -1,0 +1,23 @@
+﻿@import "step-overview.css";
+@import "animal-selection.css";
+
+.animal {
+    border: 1px solid lightgrey;
+}
+
+.animal:hover {
+    background-color: lightgrey;
+}
+
+.animal-image {
+    width: 60px;
+    margin: auto;
+}
+
+.animal-image-small {
+    width: 30px;
+}
+
+.animal-not-available {
+    background-color: #eeeeee;
+}

@@ -8,11 +8,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BeestjeOpJeFeestje.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AnimalType : Migration
+    public partial class update_database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Animals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Animals", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -169,11 +185,11 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discount = table.Column<int>(type: "int", nullable: false),
+                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discount = table.Column<int>(type: "int", nullable: true),
                     IsConfirmed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -187,54 +203,56 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Animals",
+                name: "AnimalBooking",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BookingId = table.Column<int>(type: "int", nullable: true)
+                    AnimalsId = table.Column<int>(type: "int", nullable: false),
+                    BookingsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Animals", x => x.Id);
+                    table.PrimaryKey("PK_AnimalBooking", x => new { x.AnimalsId, x.BookingsId });
                     table.ForeignKey(
-                        name: "FK_Animals_Bookings_BookingId",
-                        column: x => x.BookingId,
+                        name: "FK_AnimalBooking_Animals_AnimalsId",
+                        column: x => x.AnimalsId,
+                        principalTable: "Animals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnimalBooking_Bookings_BookingsId",
+                        column: x => x.BookingsId,
                         principalTable: "Bookings",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Animals",
-                columns: new[] { "Id", "BookingId", "ImageURL", "Name", "Price", "Type" },
+                columns: new[] { "Id", "ImageURL", "Name", "Price", "Type" },
                 values: new object[,]
                 {
-                    { 1, null, "/img/Aap.png", "Aap", 50f, 0 },
-                    { 2, null, "/img/Olifant.png", "Olifant", 200f, 0 },
-                    { 3, null, "/img/Zebra.png", "Zebra", 150f, 0 },
-                    { 4, null, "/img/Leeuw.png", "Leeuw", 300f, 0 },
-                    { 5, null, "/img/Hond.png", "Hond", 30f, 1 },
-                    { 6, null, "/img/Ezel.png", "Ezel", 60f, 1 },
-                    { 7, null, "/img/Koe.png", "Koe", 120f, 1 },
-                    { 8, null, "/img/Eend.png", "Eend", 20f, 1 },
-                    { 9, null, "/img/Kuiken.png", "Kuiken", 10f, 1 },
-                    { 10, null, "/img/Pinguin.png", "Pinguïn", 80f, 2 },
-                    { 11, null, "/img/IJsbeer.png", "IJsbeer", 250f, 2 },
-                    { 12, null, "/img/Zeehond.png", "Zeehond", 100f, 2 },
-                    { 13, null, "/img/Kameel.png", "Kameel", 180f, 3 },
-                    { 14, null, "/img/Slang.png", "Slang", 70f, 3 },
-                    { 15, null, "/img/T-Rex.png", "T-Rex", 1000f, 4 },
-                    { 16, null, "/img/Unicorn.png", "Unicorn", 1200f, 4 }
+                    { 1, "/img/Aap.png", "Aap", 50f, 0 },
+                    { 2, "/img/Olifant.png", "Olifant", 200f, 0 },
+                    { 3, "/img/Zebra.png", "Zebra", 150f, 0 },
+                    { 4, "/img/Leeuw.png", "Leeuw", 300f, 0 },
+                    { 5, "/img/Hond.png", "Hond", 30f, 1 },
+                    { 6, "/img/Ezel.png", "Ezel", 60f, 1 },
+                    { 7, "/img/Koe.png", "Koe", 120f, 1 },
+                    { 8, "/img/Eend.png", "Eend", 20f, 1 },
+                    { 9, "/img/Kuiken.png", "Kuiken", 10f, 1 },
+                    { 10, "/img/Pinguin.png", "Pinguïn", 80f, 2 },
+                    { 11, "/img/IJsbeer.png", "IJsbeer", 250f, 2 },
+                    { 12, "/img/Zeehond.png", "Zeehond", 100f, 2 },
+                    { 13, "/img/Kameel.png", "Kameel", 180f, 3 },
+                    { 14, "/img/Slang.png", "Slang", 70f, 3 },
+                    { 15, "/img/T-Rex.png", "T-Rex", 1000f, 4 },
+                    { 16, "/img/Unicorn.png", "Unicorn", 1200f, 4 }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Animals_BookingId",
-                table: "Animals",
-                column: "BookingId");
+                name: "IX_AnimalBooking_BookingsId",
+                table: "AnimalBooking",
+                column: "BookingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -285,7 +303,7 @@ namespace BeestjeOpJeFeestje.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Animals");
+                name: "AnimalBooking");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -301,6 +319,9 @@ namespace BeestjeOpJeFeestje.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Animals");
 
             migrationBuilder.DropTable(
                 name: "Bookings");

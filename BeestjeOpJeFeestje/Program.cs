@@ -1,6 +1,7 @@
 using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BeestjeOpJeFeestje;
 
@@ -78,11 +79,14 @@ public class Program
             Name = "admin",
             Email = "admin@beestjeopjefeestje.nl",
             Address = "admin",
-            PhoneNumber = "1234567"
+            PhoneNumber = "1234567",
+            MembershipLevel = MembershipLevel.Platinum
         };
 
         await userManager.CreateAsync(user, "Admin@123");
         await userManager.AddToRoleAsync(user, "Admin");
+
+        await userManager.AddClaimAsync(user, new Claim("MembershipLevel", user.MembershipLevel.ToString()));
     }
 
     private static async Task SeedDefaultRoles(IServiceProvider serviceProvider)

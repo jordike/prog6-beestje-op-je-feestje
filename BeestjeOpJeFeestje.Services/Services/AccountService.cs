@@ -40,6 +40,11 @@ public class AccountService
         await _userManager.DeleteAsync(account);
     }
 
+    public async Task UpdateUser(Account account)
+    {
+        await _userManager.UpdateAsync(account);
+    }
+
     public async Task<Tuple<string, IdentityResult>> CreateUser(string name, string email, string adres, string phoneNumber, MembershipLevel membershipLevel)
     {
         Account user = new Account

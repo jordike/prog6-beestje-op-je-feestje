@@ -11,6 +11,7 @@
             <th>E-mail</th>
             <th>Adres</th>
             <th>Telefoonnummer</th>
+            <th>Lidmaadschapskaart</th>
             <th>Acties</th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
                 <td>@account.Email</td>
                 <td>@account.Address</td>
                 <td>@account.PhoneNumber</td>
+                <td>@account.MembershipLevel.ToString()</td>
                 <td>
                     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@account.Id">Bewerken</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@account.Id">Verwijderen</a>

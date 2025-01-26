@@ -22,6 +22,21 @@ namespace BeestjeOpJeFeestje.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AnimalBooking", b =>
+                {
+                    b.Property<int>("AnimalsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AnimalsId", "BookingsId");
+
+                    b.HasIndex("BookingsId");
+
+                    b.ToTable("AnimalBooking");
+                });
+
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Account", b =>
                 {
                     b.Property<string>("Id")
@@ -106,9 +121,6 @@ namespace BeestjeOpJeFeestje.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -124,8 +136,6 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
 
                     b.ToTable("Animals");
 
@@ -272,25 +282,21 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContactAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactPhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Discount")
+                    b.Property<int?>("Discount")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsConfirmed")
@@ -436,11 +442,19 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Animal", b =>
+            modelBuilder.Entity("AnimalBooking", b =>
                 {
+                    b.HasOne("BeestjeOpJeFeestje.Data.Models.Animal", null)
+                        .WithMany()
+                        .HasForeignKey("AnimalsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BeestjeOpJeFeestje.Data.Models.Booking", null)
-                        .WithMany("animals")
-                        .HasForeignKey("BookingId");
+                        .WithMany()
+                        .HasForeignKey("BookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Booking", b =>
@@ -501,11 +515,6 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Booking", b =>
-                {
-                    b.Navigation("animals");
                 });
 #pragma warning restore 612, 618
         }

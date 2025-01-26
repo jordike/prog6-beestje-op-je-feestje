@@ -1,9 +1,9 @@
-﻿namespace BeestjeOpJeFeestje.Data.Models
+﻿namespace BeestjeOpJeFeestje.Data.Models;
+
+public enum MembershipLevel
 {
-    public enum MembershipLevel
-    {
-        Silver,
-        Gold,
-        Platinum
-    }
+    Geen,
+    Silver,
+    Gold,
+    Platinum
 }

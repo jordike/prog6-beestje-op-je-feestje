@@ -10,6 +10,7 @@ namespace BeestjeOpJeFeestje.Controllers
     public class AnimalController : Controller
     {
         private readonly AnimalService _beestjeService;
+
         public AnimalController(BeestjeOpJeFeestjeContext context)
         {
             _beestjeService = new AnimalService(context);

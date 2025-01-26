@@ -1,0 +1,80 @@
+﻿@model AnimalSelectionViewModel
+
+<partial name="_BookingStepProgress" model="1" />
+
+<form asp-action="StoreSelectedAnimals" method="post">
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" asp-for="@Model.BookingId" />
+    <input type="hidden" asp-for="@Model.BookingDate" />
+    
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["Error"]
+        </div>
+    }
+    
+    <div asp-validation-summary="ModelOnly"></div>
+    
+    <div class="row mt-4">
+        <div class="col-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Stap 1 - kies je beestjes</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="row row-cols-6 justify-content-center">
+                        @for (int index = 0; index < Model.Animals.Count; index++)
+                        {
+                            AnimalViewModel animalViewModel = Model.Animals[index];
+
+                            <label class="col m-1 animal @(!animalViewModel.IsAvailable ? "animal-not-available" : "")" for="animal-@animalViewModel.Animal.Id">
+                                <div class="d-flex flex-column text-center gap-2">
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Id"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Name"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Price"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Type"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.ImageURL"/>
+
+                                    <span>@animalViewModel.Animal.Name</span>
+                                    <span>@animalViewModel.Animal.Type.ToString()</span>
+
+                                    @if (animalViewModel.IsAvailable)
+                                    {
+                                        <input id="animal-@animalViewModel.Animal.Id" type="checkbox" asp-for="@Model.Animals[index].IsSelected"/>
+                                    }
+
+                                    <img class="img-fluid animal-image" src="@animalViewModel.Animal.ImageURL" alt="@animalViewModel.Animal.Name"/>
+                                    <span>@animalViewModel.Animal.Price $</span>
+                                </div>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Ga door naar stap 2</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Boeking</h4>
+                </div>
+                
+                <div class="card-body">
+                    <p>Datum: @Model.BookingDate.ToString("d-MM-yyyy")</p>
+                    
+                    <hr />
+                    
+                    <h5>Beestjes</h5>
+                    <p class="text-muted">Nog geen beestjes geselecteerd</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -3,7 +3,7 @@ using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
-namespace BeestjeOpJeFeestje.Tests
+namespace BeestjeOpJeFeestje.Tests.Services
 {
     [TestFixture]
     public class AccountServiceTests
@@ -124,6 +124,20 @@ namespace BeestjeOpJeFeestje.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Item1); // Password
             Assert.IsTrue(result.Item2.Succeeded); // IdentityResult
+        }
+
+        [Test]
+        public async Task UpdateUser_ShouldCallUpdateAsync()
+        {
+            // Arrange
+            Account user = new Account { UserName = "user1" };
+            _userManagerMock.Setup(x => x.UpdateAsync(user)).ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            await _accountService.UpdateUser(user);
+
+            // Assert
+            _userManagerMock.Verify(x => x.UpdateAsync(user), Times.Once);
         }
 
         [Test]

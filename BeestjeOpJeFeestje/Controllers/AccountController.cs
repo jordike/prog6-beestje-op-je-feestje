@@ -52,6 +52,25 @@ public class AccountController : Controller
         return View(account);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Account account)
+    {
+        Account? user = await _accountService.GetUserById(account.Id);
+
+        if (user is null)
+            return RedirectToAction("Index");
+
+        user.Name = account.Name;
+        user.Address = account.Address;
+        user.PhoneNumber = account.PhoneNumber;
+        user.MembershipLevel = account.MembershipLevel;
+
+        await _accountService.UpdateUser(user);
+
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Create()
     {
         return View();
