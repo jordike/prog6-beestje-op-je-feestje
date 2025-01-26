@@ -72,20 +72,26 @@ public class BookingController : Controller
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
         Account? account = await _userManager.GetUserAsync(HttpContext.User);
 
+        string? errorMessage;
+
         if (account != null)
         {
             IList<Claim> claims = await _userManager.GetClaimsAsync(account);
-            string? errorMessage = _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals, claims);
+            errorMessage = _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals, claims);
+        }
+        else
+        {
+            errorMessage = _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals, null);
+        }
 
-            if (errorMessage != null)
+        if (errorMessage != null)
+        {
+            TempData["Error"] = errorMessage;
+
+            return RedirectToAction("SelectAnimals", new
             {
-                TempData["Error"] = errorMessage;
-
-                return RedirectToAction("SelectAnimals", new
-                {
-                    id = viewModel.BookingId
-                });
-            }
+                id = viewModel.BookingId
+            });
         }
 
         return RedirectToAction("EnterInformation", new

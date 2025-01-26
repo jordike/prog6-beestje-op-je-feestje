@@ -51,14 +51,16 @@ public class BookingService
             .ToList();
     }
 
-    public string? StoreSelectedAnimals(int bookingId, List<AnimalViewModel> selectedAnimals, IList<Claim> claims)
+    public string? StoreSelectedAnimals(int bookingId, List<AnimalViewModel> selectedAnimals, IList<Claim>? claims)
     {
         Booking? booking = GetBookingByIdWithAnimals(bookingId);
 
         if (booking == null)
             return null;
 
-        MembershipLevel membershipLevel = GetMembershipLevel(claims);
+        MembershipLevel membershipLevel = claims != null
+            ? GetMembershipLevel(claims)
+            : MembershipLevel.Geen;
         int maxAnimals = GetMaxAnimalsAllowed(membershipLevel);
 
         string? validationMessage = ValidateSelectedAnimals(selectedAnimals, membershipLevel, maxAnimals);
@@ -140,7 +142,12 @@ public class BookingService
 
     public void ConfirmBooking(Booking booking)
     {
-        booking.IsConfirmed = true;
+        Booking? _booking = _context.Bookings.Find(booking.Id);
+
+        if (_booking == null)
+            return;
+
+        _booking.IsConfirmed = true;
         _context.SaveChanges();
     }
 
