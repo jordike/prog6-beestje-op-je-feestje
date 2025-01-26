@@ -1,44 +1,105 @@
-    using BeestjeOpJeFeestje.Models;
-    using Microsoft.EntityFrameworkCore;
+using BeestjeOpJeFeestje.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
-    namespace BeestjeOpJeFeestje;
+namespace BeestjeOpJeFeestje;
 
-    public class Program
+public class Program
+{
+    public static async Task Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.Configure<IdentityOptions>(options =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            options.SignIn.RequireConfirmedAccount = false;
+            options.User.RequireUniqueEmail = true;
+        });
 
+        // Add services to the container.
+        builder.Services.AddControllersWithViews();
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+        builder.Services.AddIdentity<Account, IdentityRole>()
+            .AddEntityFrameworkStores<BeestjeOpJeFeestjeContext>()
+            .AddDefaultTokenProviders();
 
-            builder.Services.AddDbContext<BeestjeOpJeFeestjeContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("BeestjeOpJeFeestje"));
-            });
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = "/Auth/Login";
+        });
 
-            var app = builder.Build();
+        builder.Services.AddDbContext<BeestjeOpJeFeestjeContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BeestjeOpJeFeestje"));
+        });
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+        var app = builder.Build();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
         }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        IServiceProvider serviceProvider = app.Services.CreateScope().ServiceProvider;
+        await SeedDefaultRoles(serviceProvider);
+        await SeedDefaultUser(serviceProvider);
+
+        app.Run();
     }
+
+    private static async Task SeedDefaultUser(IServiceProvider serviceProvider)
+    {
+        UserManager<Account> userManager = serviceProvider.GetRequiredService<UserManager<Account>>();
+
+        // If there are already users in the database, don't add the default user.
+        if (userManager.Users.Any())
+        {
+            return;
+        }
+
+        Account user = new Account
+        {
+            UserName = "admin",
+            Name = "admin",
+            Email = "admin@beestjeopjefeestje.nl",
+            Address = "admin",
+            PhoneNumber = "1234567",
+            MembershipLevel = MembershipLevel.Platinum
+        };
+
+        await userManager.CreateAsync(user, "Admin@123");
+        await userManager.AddToRoleAsync(user, "Admin");
+
+        await userManager.AddClaimAsync(user, new Claim("MembershipLevel", user.MembershipLevel.ToString()));
+    }
+
+    private static async Task SeedDefaultRoles(IServiceProvider serviceProvider)
+    {
+        RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        // If there are already roles in the database, don't add the default roles.
+        if (roleManager.Roles.Any())
+        {
+            return;
+        }
+
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+        await roleManager.CreateAsync(new IdentityRole("Customer"));
+    }
+}

@@ -1,0 +1,123 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<Account> UserManager
+@model Booking
+
+<partial name="_BookingStepProgress" model="2" />
+
+<form asp-action="StoreInformation" method="post">
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="row mt-4">
+        <div class="col-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Stap 2 - Vul je contactgegevens in</h4>
+                </div>
+
+                <div class="card-body">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        Account account = await UserManager.GetUserAsync(User) ?? throw new InvalidOperationException();
+
+                        <input type="hidden" asp-for="Account" value="@account" />
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactName">Naam:</label>
+                                    <input class="form-control" type="text" asp-for="ContactName" value="@account.Name" readonly />
+                                    <span asp-validation-for="ContactName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactEmail">Email:</label>
+                                    <input class="form-control" type="email" asp-for="ContactEmail" value="@account.Email" readonly />
+                                    <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactPhoneNumber">Telefoonnummer:</label>
+                                    <input class="form-control" type="tel" asp-for="ContactPhoneNumber" value="@account.PhoneNumber" readonly />
+                                    <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactAddress">Adres:</label>
+                                    <input class="form-control" type="text" asp-for="ContactAddress" value="@account.Address" readonly />
+                                    <span asp-validation-for="ContactAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactName">Naam:</label>
+                                    <input class="form-control" type="text" asp-for="ContactName"/>
+                                    <span asp-validation-for="ContactName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactEmail">Email:</label>
+                                    <input class="form-control" type="email" asp-for="ContactEmail"/>
+                                    <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactPhoneNumber">Telefoonnummer:</label>
+                                    <input class="form-control" type="tel" asp-for="ContactPhoneNumber"/>
+                                    <span asp-validation-for="ContactPhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContactAddress">Adres:</label>
+                                    <input class="form-control" type="text" asp-for="ContactAddress"/>
+                                    <span asp-validation-for="ContactAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col position-relative">
+                                <div class="position-absolute top-50 start-50 translate-middle">
+                                    <h5 class="mb-3">Heb je al een account?</h5>
+
+                                    <a class="btn btn-secondary" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="/Booking/EnterInformation?id=@Model.Id">Inloggen</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Ga door naar stap 3</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Boeking</h4>
+                </div>
+
+                <div class="card-body">
+                    <p>Datum: @Model.Date.ToString("d-MM-yyyy")</p>
+
+                    <hr />
+
+                    <h5>Beestjes</h5>
+                    
+                    <div class="d-flex flex-row">
+                        @foreach (Animal animal in Model.Animals)
+                        {
+                            <img class="img-fluid animal-image-small" src="@animal.ImageURL" alt="@animal.Name" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

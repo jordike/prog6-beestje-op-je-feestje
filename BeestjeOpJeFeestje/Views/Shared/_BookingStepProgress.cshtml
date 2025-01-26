@@ -1,0 +1,47 @@
+﻿@model int
+
+<section id="booking-progress">
+    <div class="row">
+        <div class="col booking-step @(Model == 1 ? "active-booking-step" : "") d-flex flex-column justify-content-center position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div class="booking-step-number position-relative">
+                    <span class="position-absolute top-50 start-50 translate-middle">
+                        1
+                    </span>
+                </div>
+
+                <span class="booking-step-title">
+                    Beestjes
+                </span>
+            </div>
+        </div>
+        
+        <div class="col booking-step @(Model == 2 ? "active-booking-step" : "") d-flex flex-column justify-content-center position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div class="booking-step-number position-relative">
+                    <span class="position-absolute top-50 start-50 translate-middle">
+                        2
+                    </span>
+                </div>
+
+                <span class="booking-step-title">
+                    Gegevens
+                </span>
+            </div>
+        </div>
+        
+        <div class="col booking-step @(Model == 3 ? "active-booking-step" : "") d-flex flex-column justify-content-center position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div class="booking-step-number position-relative">
+                    <span class="position-absolute top-50 start-50 translate-middle">
+                        3
+                    </span>
+                </div>
+
+                <span class="booking-step-title">
+                    Bevestiging
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
