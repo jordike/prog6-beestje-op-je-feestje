@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BeestjeOpJeFeestje.Models
+namespace BeestjeOpJeFeestje.Data.Models
 {
     public class Animal
     {
@@ -11,11 +11,14 @@ namespace BeestjeOpJeFeestje.Models
         public string Name { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public AnimalTypes Type { get; set; }
 
         [Required]
         public float Price { get; set; }
+
         [Required]
         public string ImageURL { get; set; }
+
+        public virtual List<Booking>? Bookings { get; set; }
     }
 }
