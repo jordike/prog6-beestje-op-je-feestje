@@ -37,11 +37,13 @@
                             {
                                 <li>@discount.Key: @discount.Value %</li>
                             }
+                            
+                            <li>Totale korting: @Model.TotalDiscount % (max. 60%)</li>
                         </ul>
                     </section>
                     
                     <section>
-                        <strong>Totaal: @Model.Booking.Animals.Select(animal => animal.Price).Sum()</strong>
+                        <strong>Totaal: @Model.Price $</strong>
                     </section>
                 </div>
 
@@ -63,7 +65,12 @@
                     <hr />
 
                     <h5>Beestjes</h5>
-                    <p class="text-muted">Nog geen beestjes geselecteerd</p>
+                    <div class="d-flex flex-row">
+                        @foreach (Animal animal in Model.Booking.Animals)
+                        {
+                            <img class="img-fluid animal-image-small" src="@animal.ImageURL" alt="@animal.Name" />
+                        }
+                    </div>
                 </div>
             </div>
         </div>

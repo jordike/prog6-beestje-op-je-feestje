@@ -129,10 +129,15 @@ public class BookingController : Controller
             return RedirectToAction("Index", "Home");
 
         Dictionary<string, int> discounts = _bookingService.GetDiscounts(booking);
+        int totalDiscount = _bookingService.GetTotalDiscount(discounts);
+        int price = _bookingService.GetPriceAfterDiscounts(booking);
+
         BookingOverviewViewModel viewModel = new BookingOverviewViewModel
         {
             Booking = booking,
-            Discounts = discounts
+            Discounts = discounts,
+            TotalDiscount = totalDiscount,
+            Price = price
         };
 
         return View(viewModel);

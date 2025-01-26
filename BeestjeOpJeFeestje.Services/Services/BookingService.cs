@@ -10,6 +10,8 @@ public class BookingService
     private readonly BeestjeOpJeFeestjeContext _context;
     private readonly DiscountService discountService;
 
+    private const int MaxDiscount = 60;
+
     public BookingService(BeestjeOpJeFeestjeContext context)
     {
         _context = context;
@@ -154,6 +156,25 @@ public class BookingService
     public Dictionary<string, int> GetDiscounts(Booking booking)
     {
         return discountService.GetDiscounts(booking);
+    }
+
+    public int GetTotalDiscount(Dictionary<string, int> discounts)
+    {
+        return discounts.Values.Sum();
+    }
+
+    public int GetPriceAfterDiscounts(Booking booking)
+    {
+        Dictionary<string, int> discounts = GetDiscounts(booking);
+        int totalDiscountPercentage = GetTotalDiscount(discounts);
+        float totalPrice = booking.Animals.Sum(animal => animal.Price);
+
+        if (totalDiscountPercentage > MaxDiscount)
+        {
+            totalDiscountPercentage = MaxDiscount;
+        }
+
+        return (int) (totalPrice * (1 - totalDiscountPercentage / 100f));
     }
 
     private bool IsAnimalAvailable(Animal animal, DateTime date)
