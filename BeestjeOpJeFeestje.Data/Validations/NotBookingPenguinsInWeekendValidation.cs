@@ -11,8 +11,9 @@ public class NotBookingPenguinsInWeekendValidation : ValidationAttribute
         if (value is not List<AnimalViewModel> animals)
             return ValidationResult.Success;
 
+        AnimalSelectionViewModel viewModel = (AnimalSelectionViewModel)validationContext.ObjectInstance;
         bool hasPenguin = animals.Any(animal => animal.Animal.Name == "Pinguïn" && animal.IsSelected);
-        bool isWeekend = DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday;
+        bool isWeekend = viewModel.BookingDate.DayOfWeek == DayOfWeek.Saturday || viewModel.BookingDate.DayOfWeek == DayOfWeek.Sunday;
 
         if (hasPenguin && isWeekend)
             return new ValidationResult("Je mag geen pinguïns boeken in het weekend.");
