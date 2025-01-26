@@ -11,7 +11,7 @@ namespace BeestjeOpJeFeestje.Data.Models
         public string Name { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public AnimalTypes Type { get; set; }
 
         [Required]
         public float Price { get; set; }

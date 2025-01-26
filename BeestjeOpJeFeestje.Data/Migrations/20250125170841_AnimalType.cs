@@ -3,29 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BeestjeOpJeFeestje.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace BeestjeOpJeFeestje.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class add_auth : Migration
+    public partial class AnimalType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bookings_Accounts_AccountId",
-                table: "Bookings");
-
-            migrationBuilder.DropTable(
-                name: "Accounts");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "AccountId",
-                table: "Bookings",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -45,10 +32,10 @@ namespace BeestjeOpJeFeestje.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MembershipLevel = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MembershipLevel = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +44,6 @@ namespace BeestjeOpJeFeestje.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -175,6 +161,81 @@ namespace BeestjeOpJeFeestje.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false),
+                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Animals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BookingId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Animals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Animals_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Animals",
+                columns: new[] { "Id", "BookingId", "ImageURL", "Name", "Price", "Type" },
+                values: new object[,]
+                {
+                    { 1, null, "/img/Aap.png", "Aap", 50f, 0 },
+                    { 2, null, "/img/Olifant.png", "Olifant", 200f, 0 },
+                    { 3, null, "/img/Zebra.png", "Zebra", 150f, 0 },
+                    { 4, null, "/img/Leeuw.png", "Leeuw", 300f, 0 },
+                    { 5, null, "/img/Hond.png", "Hond", 30f, 1 },
+                    { 6, null, "/img/Ezel.png", "Ezel", 60f, 1 },
+                    { 7, null, "/img/Koe.png", "Koe", 120f, 1 },
+                    { 8, null, "/img/Eend.png", "Eend", 20f, 1 },
+                    { 9, null, "/img/Kuiken.png", "Kuiken", 10f, 1 },
+                    { 10, null, "/img/Pinguin.png", "Pinguïn", 80f, 2 },
+                    { 11, null, "/img/IJsbeer.png", "IJsbeer", 250f, 2 },
+                    { 12, null, "/img/Zeehond.png", "Zeehond", 100f, 2 },
+                    { 13, null, "/img/Kameel.png", "Kameel", 180f, 3 },
+                    { 14, null, "/img/Slang.png", "Slang", 70f, 3 },
+                    { 15, null, "/img/T-Rex.png", "T-Rex", 1000f, 4 },
+                    { 16, null, "/img/Unicorn.png", "Unicorn", 1200f, 4 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animals_BookingId",
+                table: "Animals",
+                column: "BookingId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -214,21 +275,17 @@ namespace BeestjeOpJeFeestje.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Bookings_AspNetUsers_AccountId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_AccountId",
                 table: "Bookings",
-                column: "AccountId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "AccountId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bookings_AspNetUsers_AccountId",
-                table: "Bookings");
+            migrationBuilder.DropTable(
+                name: "Animals");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -246,43 +303,13 @@ namespace BeestjeOpJeFeestje.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "AccountId",
-                table: "Bookings",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Membershiplevel = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.Id);
-                });
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Bookings_Accounts_AccountId",
-                table: "Bookings",
-                column: "AccountId",
-                principalTable: "Accounts",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

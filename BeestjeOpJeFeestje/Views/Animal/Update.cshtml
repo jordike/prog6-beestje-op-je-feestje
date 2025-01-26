@@ -1,0 +1,47 @@
+﻿@model Animal
+
+@{
+    ViewData["Title"] = "Beestje Updaten";
+    Array Types = ViewData["AnimalTypes"] as Array;
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Beestje Updaten</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="form-label">Naam</label>
+            <input asp-for="Name" class="form-control" placeholder="Wijzig de naam van het beestje" required />
+            <div class="invalid-feedback">Vul een naam in.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Type" class="form-label">Type</label>
+            <select asp-for="@Model.Type" class="form-select">
+                @foreach (var type in Types)
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+            <div class="invalid-feedback">Kies een type.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price" class="form-label">Prijs</label>
+            <input asp-for="Price" class="form-control" placeholder="Wijzig de prijs (€)" type="number" step="0.01" required />
+            <div class="invalid-feedback">Vul een geldige prijs in.</div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImageURL" class="form-label">Afbeelding URL</label>
+            <input asp-for="ImageURL" class="form-control" placeholder="Wijzig de URL van de afbeelding" required />
+            <div class="invalid-feedback">Vul een geldige URL in.</div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Opslaan</button>
+            <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Verwijderen</a>
+        </div>
+    </form>
+</div>

@@ -132,13 +132,144 @@ namespace BeestjeOpJeFeestje.Data.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookingId");
+
                     b.ToTable("Animals", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ImageURL = "/img/Aap.png",
+                            Name = "Aap",
+                            Price = 50f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ImageURL = "/img/Olifant.png",
+                            Name = "Olifant",
+                            Price = 200f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ImageURL = "/img/Zebra.png",
+                            Name = "Zebra",
+                            Price = 150f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ImageURL = "/img/Leeuw.png",
+                            Name = "Leeuw",
+                            Price = 300f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ImageURL = "/img/Hond.png",
+                            Name = "Hond",
+                            Price = 30f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ImageURL = "/img/Ezel.png",
+                            Name = "Ezel",
+                            Price = 60f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ImageURL = "/img/Koe.png",
+                            Name = "Koe",
+                            Price = 120f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ImageURL = "/img/Eend.png",
+                            Name = "Eend",
+                            Price = 20f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ImageURL = "/img/Kuiken.png",
+                            Name = "Kuiken",
+                            Price = 10f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ImageURL = "/img/Pinguin.png",
+                            Name = "Pinguïn",
+                            Price = 80f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ImageURL = "/img/IJsbeer.png",
+                            Name = "IJsbeer",
+                            Price = 250f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ImageURL = "/img/Zeehond.png",
+                            Name = "Zeehond",
+                            Price = 100f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ImageURL = "/img/Kameel.png",
+                            Name = "Kameel",
+                            Price = 180f,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ImageURL = "/img/Slang.png",
+                            Name = "Slang",
+                            Price = 70f,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ImageURL = "/img/T-Rex.png",
+                            Name = "T-Rex",
+                            Price = 1000f,
+                            Type = 4
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ImageURL = "/img/Unicorn.png",
+                            Name = "Unicorn",
+                            Price = 1200f,
+                            Type = 4
+                        });
                 });
 
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Booking", b =>
