@@ -134,7 +134,12 @@ public class BookingService
 
     private void UpdateBookingAnimals(Booking booking, List<AnimalViewModel> selectedAnimals)
     {
-        booking.Animals = new List<Animal>();
+        if (booking.Animals == null)
+        {
+            booking.Animals = new List<Animal>();
+        }
+
+        booking.Animals.Clear();
 
         foreach (Animal? animal in selectedAnimals.Select(animalViewModel => _context.Animals.Find(animalViewModel.Animal.Id)).OfType<Animal>())
         {
@@ -196,7 +201,7 @@ public class BookingService
             totalDiscountPercentage = MaxDiscount;
         }
 
-        return (int) (totalPrice * (1 - totalDiscountPercentage / 100f));
+        return (int) (totalPrice / 100 * (100 - totalDiscountPercentage));
     }
 
     private bool IsAnimalAvailable(Animal animal, DateTime date)
