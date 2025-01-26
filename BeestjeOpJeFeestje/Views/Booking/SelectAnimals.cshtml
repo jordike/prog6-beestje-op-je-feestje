@@ -45,7 +45,7 @@
                                         <input id="animal-@animalViewModel.Animal.Id" type="checkbox" asp-for="@Model.Animals[index].IsSelected"/>
                                     }
 
-                                    <img class="img-fluid animal-image" src="~/img/Aap.png" alt="@animalViewModel.Animal.Name"/>
+                                    <img class="img-fluid animal-image" src="@animalViewModel.Animal.ImageURL" alt="@animalViewModel.Animal.Name"/>
                                     <span>@animalViewModel.Animal.Price $</span>
                                 </div>
                             </label>
