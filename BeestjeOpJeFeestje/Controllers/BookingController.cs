@@ -1,17 +1,17 @@
-﻿using System.Data.Entity;
-using BeestjeOpJeFeestje.Data.Models;
+﻿using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
+using BeestjeOpJeFeestje.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
 
 public class BookingController : Controller
 {
-    private readonly BeestjeOpJeFeestjeContext _context;
+    private readonly BookingService _bookingService;
 
-    public BookingController(BeestjeOpJeFeestjeContext context)
+    public BookingController(BookingService bookingService)
     {
-        _context = context;
+        _bookingService = bookingService;
     }
 
     [HttpPost]
@@ -24,14 +24,7 @@ public class BookingController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        Booking booking = new Booking
-        {
-            Date = date.ToDateTime(new TimeOnly())
-        };
-        booking.Animals = new List<Animal>();
-
-        _context.Bookings.Add(booking);
-        _context.SaveChanges();
+        Booking booking = _bookingService.StartBooking(date);
 
         return RedirectToAction("SelectAnimals", new
         {
@@ -41,20 +34,12 @@ public class BookingController : Controller
 
     public IActionResult SelectAnimals(int id)
     {
-        Booking? booking = _context.Bookings.Find(id);
+        Booking? booking = _bookingService.GetBookingById(id);
 
         if (booking == null)
             return RedirectToAction("Index", "Home");
 
-        List<Animal> animals = _context.Animals.ToList();
-        List<AnimalViewModel> animalViewModels = animals
-            .Select(animal => new AnimalViewModel
-            {
-                Animal = animal,
-                IsSelected = false,
-                IsAvailable = IsAnimalAvailable(animal, booking.Date)
-            })
-            .ToList();
+        List<AnimalViewModel> animalViewModels = _bookingService.GetAnimalViewModels(booking.Date);
         AnimalSelectionViewModel viewModel = new AnimalSelectionViewModel
         {
             Animals = animalViewModels,
@@ -69,48 +54,23 @@ public class BookingController : Controller
     public IActionResult StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
     {
         if (!ModelState.IsValid)
-            return RedirectToAction("SelectAnimals", viewModel);
+            return RedirectToAction("SelectAnimals", viewModel.BookingId);
 
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
-        Booking? booking = _context.Bookings
-            .Include(b => b.Animals)
-            .FirstOrDefault(b => b.Id == viewModel.BookingId);
-
-        if (booking == null)
-            return RedirectToAction("SelectAnimals", viewModel);
-
-        // Ensure Animals collection is loaded
-        _context.Entry(booking).Collection(b => b.Animals).Load();
-
-        booking.Animals = new List<Animal>();
-
-        foreach (AnimalViewModel animalViewModel in selectedAnimals)
-        {
-            Animal? animal = _context.Animals.Find(animalViewModel.Animal.Id);
-
-            if (animal != null)
-                booking.Animals.Add(animal);
-        }
-
-        _context.SaveChanges();
+        _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals);
 
         return RedirectToAction("EnterInformation", new
         {
-            id = booking.Id
+            id = viewModel.BookingId
         });
     }
 
     public IActionResult EnterInformation(int id)
     {
-        Booking booking = _context.Bookings
-            .Include(b => b.Animals)
-            .FirstOrDefault(_booking => _booking.Id == id);
+        Booking? booking = _bookingService.GetBookingById(id);
 
         if (booking == null)
-            return RedirectToAction("SelectAnimals", booking);
-
-        // Ensure Animals collection is loaded
-        _context.Entry(booking).Collection(b => b.Animals).Load();
+            return RedirectToAction("Index", "Home");
 
         return View(booking);
     }
@@ -118,34 +78,20 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult StoreInformation(Booking booking)
     {
-        Booking? _booking = _context.Bookings.Find(booking.Id);
-
-        if (_booking == null)
-            return RedirectToAction("SelectAnimals", booking);
-
-        _booking.ContactName = booking.ContactName;
-        _booking.ContactEmail = booking.ContactEmail;
-        _booking.ContactPhoneNumber = booking.ContactPhoneNumber;
-        _booking.ContactAddress = booking.ContactAddress;
-        _context.SaveChanges();
+        _bookingService.StoreInformation(booking);
 
         return RedirectToAction("BookingOverview", new
         {
-            id = _booking.Id
+            id = booking.Id
         });
     }
 
     public IActionResult BookingOverview(int id)
     {
-        Booking? booking = _context.Bookings
-            .Include(b => b.Animals)
-            .FirstOrDefault(b => b.Id == id);
+        Booking? booking = _bookingService.GetBookingById(id);
 
         if (booking == null)
             return RedirectToAction("Index", "Home");
-
-        // Ensure Animals collection is loaded
-        _context.Entry(booking).Collection(b => b.Animals).Load();
 
         return View(booking);
     }
@@ -153,19 +99,10 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult BookingConfirmed(Booking booking)
     {
-        booking.IsConfirmed = true;
-        _context.SaveChanges();
+        _bookingService.ConfirmBooking(booking);
 
         TempData["Success"] = "Uw boeking is geplaatst";
 
         return RedirectToAction("Index", "Home");
-    }
-
-    private bool IsAnimalAvailable(Animal animal, DateTime date)
-    {
-        return !_context.Bookings
-            .Where(booking => booking.Date == date && booking.IsConfirmed)
-            .SelectMany(booking => booking.Animals)
-            .Contains(animal);
     }
 }
