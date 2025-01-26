@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BeestjeOpJeFeestje.Data.Validations;
 
 namespace BeestjeOpJeFeestje.Data.Models;
 
@@ -10,7 +11,12 @@ public class Booking
     [Required]
     public DateTime Date { get; set; }
 
-    public virtual List<Animal> Animals { get; set; }
+    [MustBookAnimalsValidation]
+    [AllowedAnimalTypesValidation]
+    [NotBookingDesertAnimalsInWinterValidation]
+    [NotBookingPenguinsInWeekendValidation]
+    [NotBookingSnowAnimalsInSummerValidation]
+    public List<Animal> Animals { get; set; }
 
     public Account? Account { get; set; }
 

@@ -15,23 +15,37 @@ public class BookingController : Controller
     }
 
     [HttpPost]
-    public IActionResult StartBooking(Booking booking)
+    public IActionResult StartBooking(DateOnly date)
     {
-        if (booking.Date < DateTime.Now)
+        if (date < DateOnly.FromDateTime(DateTime.Now))
         {
             ModelState.AddModelError("Date", "The date cannot be in the past.");
 
-            return RedirectToAction("Index", "Home", booking);
+            return RedirectToAction("Index", "Home");
         }
+
+        Booking booking = new Booking
+        {
+            Date = date.ToDateTime(new TimeOnly())
+        };
+        booking.Animals = new List<Animal>();
 
         _context.Bookings.Add(booking);
         _context.SaveChanges();
 
-        return RedirectToAction("SelectAnimals", booking);
+        return RedirectToAction("SelectAnimals", new
+        {
+            id = booking.Id
+        });
     }
 
-    public IActionResult SelectAnimals(Booking booking)
+    public IActionResult SelectAnimals(int id)
     {
+        Booking? booking = _context.Bookings.Find(id);
+
+        if (booking == null)
+            return RedirectToAction("Index", "Home");
+
         List<Animal> animals = _context.Animals.ToList();
         List<AnimalViewModel> animalViewModels = animals
             .Select(animal => new AnimalViewModel
@@ -44,7 +58,8 @@ public class BookingController : Controller
         AnimalSelectionViewModel viewModel = new AnimalSelectionViewModel
         {
             Animals = animalViewModels,
-            Booking = booking
+            BookingDate = booking.Date,
+            BookingId = booking.Id
         };
 
         return View(viewModel);
@@ -53,10 +68,13 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+            return RedirectToAction("SelectAnimals", viewModel);
+
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
         Booking? booking = _context.Bookings
             .Include(b => b.Animals)
-            .FirstOrDefault(b => b.Id == viewModel.Booking.Id);
+            .FirstOrDefault(b => b.Id == viewModel.BookingId);
 
         if (booking == null)
             return RedirectToAction("SelectAnimals", viewModel);
@@ -76,22 +94,25 @@ public class BookingController : Controller
 
         _context.SaveChanges();
 
-        return RedirectToAction("EnterInformation", booking);
+        return RedirectToAction("EnterInformation", new
+        {
+            id = booking.Id
+        });
     }
 
-    public IActionResult EnterInformation(Booking booking, int? bookingId)
+    public IActionResult EnterInformation(int id)
     {
-        Booking _booking = _context.Bookings
+        Booking booking = _context.Bookings
             .Include(b => b.Animals)
-            .FirstOrDefault(_booking => _booking.Id == (bookingId ?? booking.Id));
+            .FirstOrDefault(_booking => _booking.Id == id);
 
-        if (_booking == null)
+        if (booking == null)
             return RedirectToAction("SelectAnimals", booking);
 
         // Ensure Animals collection is loaded
-        _context.Entry(_booking).Collection(b => b.Animals).Load();
+        _context.Entry(booking).Collection(b => b.Animals).Load();
 
-        return View(_booking);
+        return View(booking);
     }
 
     [HttpPost]
@@ -108,32 +129,31 @@ public class BookingController : Controller
         _booking.ContactAddress = booking.ContactAddress;
         _context.SaveChanges();
 
-        return RedirectToAction("BookingOverview", booking);
+        return RedirectToAction("BookingOverview", new
+        {
+            id = _booking.Id
+        });
     }
 
-    public IActionResult BookingOverview(Booking booking)
+    public IActionResult BookingOverview(int id)
     {
-        Booking? _booking = _context.Bookings
+        Booking? booking = _context.Bookings
             .Include(b => b.Animals)
-            .FirstOrDefault(b => b.Id == booking.Id);
+            .FirstOrDefault(b => b.Id == id);
 
-        if (_booking == null)
-            return RedirectToAction("EnterInformation", booking);
+        if (booking == null)
+            return RedirectToAction("Index", "Home");
 
         // Ensure Animals collection is loaded
-        _context.Entry(_booking).Collection(b => b.Animals).Load();
+        _context.Entry(booking).Collection(b => b.Animals).Load();
 
-        return View(_booking);
+        return View(booking);
     }
 
+    [HttpPost]
     public IActionResult BookingConfirmed(Booking booking)
     {
-        Booking? _booking = _context.Bookings.Find(booking.Id);
-
-        if (_booking == null)
-            return RedirectToAction("BookingOverview", booking);
-
-        _booking.IsConfirmed = true;
+        booking.IsConfirmed = true;
         _context.SaveChanges();
 
         TempData["Success"] = "Uw boeking is geplaatst";

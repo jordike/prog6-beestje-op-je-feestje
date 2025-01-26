@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BeestjeOpJeFeestje.Data.Models;
+using Microsoft.IdentityModel.Tokens;
 
-namespace BeestjeOpJeFeestje.Services.Validations;
+namespace BeestjeOpJeFeestje.Data.Validations;
 
 public class AllowedAnimalTypesValidation : ValidationAttribute
 {
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
-        List<Animal> animals = value as List<Animal>;
+        // If there are no animals, then the user is not booking animals with conflicting types.
+        if (value is not List<Animal> animals)
+            return ValidationResult.Success;
 
         bool hasFarmAnimal = animals.Any(animal => animal.Type == "Boerderijdier");
         bool hasRestrictedAnimal = animals.Any(animal => animal.Type is "Leeuw" or "IJsbeer");

@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
 using BeestjeOpJeFeestje.Data.Models;
 
-namespace BeestjeOpJeFeestje.Services.Validations;
+namespace BeestjeOpJeFeestje.Data.Validations;
 
 public class NotBookingDesertAnimalsInWinterValidation : ValidationAttribute
 {
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
-        List<Animal> animals = new List<Animal>();
+        // If there are no animals, then the user is not booking desert animals in winter.
+        if (value is not List<Animal> animals)
+            return ValidationResult.Success;
 
         bool hasDesertAnimal = animals.Any(animal => animal.Type == "Woestijn");
         bool isWinter = DateTime.Now.Month >= 10 || DateTime.Now.Month <= 2;

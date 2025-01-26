@@ -5,7 +5,8 @@
 <form asp-action="StoreSelectedAnimals" method="post">
     @Html.AntiForgeryToken()
     
-    <input type="hidden" asp-for="@Model.Booking.Id" />
+    <input type="hidden" asp-for="@Model.BookingId" />
+    <input type="hidden" asp-for="@Model.BookingDate" />
     
     <div class="row mt-4">
         <div class="col-10">
@@ -23,6 +24,10 @@
                             <label class="col m-1 animal @(!animalViewModel.IsAvailable ? "animal-not-available" : "")" for="animal-@animalViewModel.Animal.Id">
                                 <div class="d-flex flex-column text-center gap-2">
                                     <input type="hidden" asp-for="@Model.Animals[index].Animal.Id" />
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Name" />
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Price" />
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Type" />
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.ImageURL" />
 
                                     <span>@animalViewModel.Animal.Name</span>
                                     
@@ -52,7 +57,7 @@
                 </div>
                 
                 <div class="card-body">
-                    <p>Datum: @Model.Booking.Date.ToString("d-MM-yyyy")</p>
+                    <p>Datum: @Model.BookingDate.ToString("d-MM-yyyy")</p>
                     
                     <hr />
                     

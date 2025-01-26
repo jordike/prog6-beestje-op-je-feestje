@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BeestjeOpJeFeestje.Data.Models;
 
-namespace BeestjeOpJeFeestje.Services.Validations;
+namespace BeestjeOpJeFeestje.Data.Validations;
 
 public class NotBookingPenguinsInWeekendValidation : ValidationAttribute
 {
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
-        List<Animal> animals = value as List<Animal>;
+        // If no animals are selected, then the user is not booking penguins in the weekend.
+        if (value is not List<Animal> animals)
+            return ValidationResult.Success;
 
         bool hasPenguin = animals.Any(animal => animal.Type == "Pinguïn");
         bool isWeekend = DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday;

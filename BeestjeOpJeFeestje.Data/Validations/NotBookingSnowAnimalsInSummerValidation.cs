@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BeestjeOpJeFeestje.Data.Models;
 
-namespace BeestjeOpJeFeestje.Services.Validations;
+namespace BeestjeOpJeFeestje.Data.Validations;
 
 public class NotBookingSnowAnimalsInSummerValidation : ValidationAttribute
 {
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
-        List<Animal> animals = value as List<Animal>;
+        // If there are no animals, then the user is not booking snow animals in the summer.
+        if (value is not List<Animal> animals)
+            return ValidationResult.Success;
 
         bool hasSnowAnimal = animals.Any(animal => animal.Type == "Sneeuw");
         bool isSummer = DateTime.Now.Month >= 6 && DateTime.Now.Month <= 8;

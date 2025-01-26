@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BeestjeOpJeFeestje.Data.Models;
+using Microsoft.IdentityModel.Tokens;
 
-namespace BeestjeOpJeFeestje.Services.Validations;
+namespace BeestjeOpJeFeestje.Data.Validations;
 
 public class MustBookAnimalsValidation : ValidationAttribute
 {
@@ -9,7 +10,7 @@ public class MustBookAnimalsValidation : ValidationAttribute
     {
         List<Animal>? animals = value as List<Animal>;
 
-        if (animals == null)
+        if (animals.IsNullOrEmpty())
             return new ValidationResult("Je moet dieren selecteren om te kunnen boeken.");
 
         return ValidationResult.Success;

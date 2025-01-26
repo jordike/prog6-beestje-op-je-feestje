@@ -3,5 +3,6 @@
 public class AnimalSelectionViewModel
 {
     public List<AnimalViewModel> Animals { get; set; }
-    public Models.Booking Booking { get; set; }
+    public DateTime BookingDate { get; set; }
+    public int BookingId { get; set; }
 }

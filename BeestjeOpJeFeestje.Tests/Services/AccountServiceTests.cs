@@ -3,7 +3,7 @@ using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
-namespace BeestjeOpJeFeestje.Tests
+namespace BeestjeOpJeFeestje.Tests.Services
 {
     [TestFixture]
     public class AccountServiceTests
