@@ -39,6 +39,7 @@
                                     <input type="hidden" asp-for="@Model.Animals[index].Animal.ImageURL"/>
 
                                     <span>@animalViewModel.Animal.Name</span>
+                                    <span>@animalViewModel.Animal.Type.ToString()</span>
 
                                     @if (animalViewModel.IsAvailable)
                                     {
