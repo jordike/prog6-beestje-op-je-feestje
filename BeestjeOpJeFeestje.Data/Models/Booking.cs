@@ -11,11 +11,6 @@ public class Booking
     [Required]
     public DateTime Date { get; set; }
 
-    [MustBookAnimalsValidation]
-    [AllowedAnimalTypesValidation]
-    [NotBookingDesertAnimalsInWinterValidation]
-    [NotBookingPenguinsInWeekendValidation]
-    [NotBookingSnowAnimalsInSummerValidation]
     public List<Animal> Animals { get; set; }
 
     public Account? Account { get; set; }
