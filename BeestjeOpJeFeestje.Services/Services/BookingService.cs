@@ -37,6 +37,7 @@ public class BookingService
     public List<AnimalViewModel> GetAnimalViewModels(DateTime bookingDate)
     {
         List<Animal> animals = _context.Animals.ToList();
+
         return animals
             .Select(animal => new AnimalViewModel
             {

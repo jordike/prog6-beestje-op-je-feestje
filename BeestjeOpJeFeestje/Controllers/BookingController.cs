@@ -9,9 +9,9 @@ public class BookingController : Controller
 {
     private readonly BookingService _bookingService;
 
-    public BookingController(BookingService bookingService)
+    public BookingController(BeestjeOpJeFeestjeContext context)
     {
-        _bookingService = bookingService;
+        _bookingService = new BookingService(context);
     }
 
     [HttpPost]
