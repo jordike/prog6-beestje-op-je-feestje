@@ -82,8 +82,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             // Arrange
             var animal = new Animal { Id = 1, Name = "Lion" };
             var animals = new List<Animal> { animal };
-            var booking1 = new Booking { Id = 1, animals = animals };
-            var booking2 = new Booking { Id = 2, animals = animals };
+            var booking1 = new Booking { Id = 1, Animals = animals };
+            var booking2 = new Booking { Id = 2, Animals = animals };
             var bookings = new List<Booking> { booking1, booking2 };
             _contextMock.Setup(c => c.Bookings).Returns(DbSetExtensions.ReturnsDbSet(bookings));
 

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BeestjeOpJeFeestje.Data.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BeestjeOpJeFeestje.Data.Validations;
 
@@ -12,8 +11,8 @@ public class AllowedAnimalTypesValidation : ValidationAttribute
         if (value is not List<Animal> animals)
             return ValidationResult.Success;
 
-        bool hasFarmAnimal = animals.Any(animal => animal.Type == "Boerderijdier");
-        bool hasRestrictedAnimal = animals.Any(animal => animal.Type is "Leeuw" or "IJsbeer");
+        bool hasFarmAnimal = animals.Any(animal => animal.Type == AnimalTypes.Boerderij);
+        bool hasRestrictedAnimal = animals.Any(animal => animal.Name is "Leeuw" or "IJsbeer");
 
         if (hasFarmAnimal && hasRestrictedAnimal)
             return new ValidationResult("Je mag geen beestje boeken van het type 'Leeuw' of 'IJsbeer' als je ook een beestje boekt van het type 'Boerderijdier'.");

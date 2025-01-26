@@ -11,7 +11,7 @@ public class NotBookingPenguinsInWeekendValidation : ValidationAttribute
         if (value is not List<Animal> animals)
             return ValidationResult.Success;
 
-        bool hasPenguin = animals.Any(animal => animal.Type == "Pinguïn");
+        bool hasPenguin = animals.Any(animal => animal.Name == "Pinguïn");
         bool isWeekend = DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday;
 
         if (hasPenguin && isWeekend)

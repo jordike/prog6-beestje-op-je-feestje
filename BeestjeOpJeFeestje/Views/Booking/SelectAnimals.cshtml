@@ -8,6 +8,8 @@
     <input type="hidden" asp-for="@Model.BookingId" />
     <input type="hidden" asp-for="@Model.BookingDate" />
     
+    <div asp-validation-summary="ModelOnly"></div>
+    
     <div class="row mt-4">
         <div class="col-10">
             <div class="card">
@@ -23,14 +25,14 @@
 
                             <label class="col m-1 animal @(!animalViewModel.IsAvailable ? "animal-not-available" : "")" for="animal-@animalViewModel.Animal.Id">
                                 <div class="d-flex flex-column text-center gap-2">
-                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Id" />
-                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Name" />
-                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Price" />
-                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Type" />
-                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.ImageURL" />
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Id"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Name"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Price"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.Type"/>
+                                    <input type="hidden" asp-for="@Model.Animals[index].Animal.ImageURL"/>
 
                                     <span>@animalViewModel.Animal.Name</span>
-                                    
+
                                     @if (animalViewModel.IsAvailable)
                                     {
                                         <input id="animal-@animalViewModel.Animal.Id" type="checkbox" asp-for="@Model.Animals[index].IsSelected"/>
@@ -43,7 +45,7 @@
                         }
                     </div>
                 </div>
-                
+
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Ga door naar stap 2</button>
                 </div>

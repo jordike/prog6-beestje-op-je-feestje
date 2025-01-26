@@ -31,7 +31,7 @@ public class AnimalService
 
     public List<Booking>? GetAnimalBookings(Animal animal)
     {
-        List<Booking>? bookings = _context.Bookings.Where(b => b.animals.Contains(animal)).ToList();
+        List<Booking>? bookings = _context.Bookings.Where(b => b.Animals.Contains(animal)).ToList();
 
         return bookings;
     }
