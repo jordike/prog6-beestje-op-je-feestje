@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
 using Microsoft.EntityFrameworkCore;
@@ -48,16 +49,38 @@ public class BookingService
             .ToList();
     }
 
-    public void StoreSelectedAnimals(int bookingId, List<AnimalViewModel> selectedAnimals)
+    public string? StoreSelectedAnimals(int bookingId, List<AnimalViewModel> selectedAnimals, IList<Claim> claims)
     {
         Booking? booking = _context.Bookings
             .Include(b => b.Animals)
             .FirstOrDefault(b => b.Id == bookingId);
 
         if (booking == null)
-            return;
+            return null;
 
         _context.Entry(booking).Collection(b => b.Animals).Load();
+
+        var membershipLevelClaim = claims.FirstOrDefault(c => c.Type == "MembershipLevel");
+        MembershipLevel membershipLevel = (MembershipLevel)Enum.Parse(typeof(MembershipLevel), membershipLevelClaim.Value);
+
+        int maxAnimals = membershipLevel switch
+        {
+            MembershipLevel.Geen => 3,
+            MembershipLevel.Silver => 4,
+            MembershipLevel.Gold => int.MaxValue,
+            MembershipLevel.Platinum => int.MaxValue,
+            _ => 3
+        };
+
+        if (selectedAnimals.Count > maxAnimals)
+        {
+            return $"Je mag maximaal {maxAnimals} dieren boeken.";
+        }
+
+        if (membershipLevel != MembershipLevel.Platinum && selectedAnimals.Any(animal => animal.Animal.Type == AnimalTypes.VIP))
+        {
+            return "Je mag geen VIP-dieren boeken.";
+        }
 
         booking.Animals = new List<Animal>();
 
@@ -70,6 +93,8 @@ public class BookingService
         }
 
         _context.SaveChanges();
+
+        return null;
     }
 
     public void StoreInformation(Booking booking)

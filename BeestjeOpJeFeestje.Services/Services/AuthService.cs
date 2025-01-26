@@ -1,5 +1,6 @@
 ﻿using BeestjeOpJeFeestje.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BeestjeOpJeFeestje.Services.Services;
 
@@ -22,6 +23,11 @@ public class AuthService
             return false;
 
         SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddClaimAsync(user, new Claim("MembershipLevel", user.MembershipLevel.ToString()));
+        }
 
         return result.Succeeded;
     }

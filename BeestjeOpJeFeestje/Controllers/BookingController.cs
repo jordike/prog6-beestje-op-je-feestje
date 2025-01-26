@@ -1,6 +1,8 @@
-﻿using BeestjeOpJeFeestje.Data.Models;
+﻿using System.Security.Claims;
+using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Data.Models.ViewModels.Booking;
 using BeestjeOpJeFeestje.Services.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeestjeOpJeFeestje.Controllers;
@@ -8,10 +10,12 @@ namespace BeestjeOpJeFeestje.Controllers;
 public class BookingController : Controller
 {
     private readonly BookingService _bookingService;
+    private readonly UserManager<Account> _userManager;
 
-    public BookingController(BeestjeOpJeFeestjeContext context)
+    public BookingController(BeestjeOpJeFeestjeContext context, UserManager<Account> userManager)
     {
         _bookingService = new BookingService(context);
+        _userManager = userManager;
     }
 
     [HttpPost]
@@ -51,7 +55,7 @@ public class BookingController : Controller
     }
 
     [HttpPost]
-    public IActionResult StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
+    public async Task<IActionResult> StoreSelectedAnimals(AnimalSelectionViewModel viewModel)
     {
         if (!ModelState.IsValid)
         {
@@ -66,7 +70,23 @@ public class BookingController : Controller
         }
 
         List<AnimalViewModel> selectedAnimals = viewModel.Animals.Where(animal => animal.IsSelected).ToList();
-        _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals);
+        Account? account = await _userManager.GetUserAsync(HttpContext.User);
+
+        if (account != null)
+        {
+            IList<Claim> claims = await _userManager.GetClaimsAsync(account);
+            string? errorMessage = _bookingService.StoreSelectedAnimals(viewModel.BookingId, selectedAnimals, claims);
+
+            if (errorMessage != null)
+            {
+                TempData["Error"] = errorMessage;
+
+                return RedirectToAction("SelectAnimals", new
+                {
+                    id = viewModel.BookingId
+                });
+            }
+        }
 
         return RedirectToAction("EnterInformation", new
         {
