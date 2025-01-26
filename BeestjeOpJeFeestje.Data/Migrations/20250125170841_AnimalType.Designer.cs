@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BeestjeOpJeFeestje.Migrations
+namespace BeestjeOpJeFeestje.Data.Migrations
 {
     [DbContext(typeof(BeestjeOpJeFeestjeContext))]
-    [Migration("20250123200203_add_auth")]
-    partial class add_auth
+    [Migration("20250125170841_AnimalType")]
+    partial class AnimalType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,82 @@ namespace BeestjeOpJeFeestje.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Account", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("MembershipLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
 
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Animal", b =>
                 {
@@ -47,15 +123,144 @@ namespace BeestjeOpJeFeestje.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
 
                     b.ToTable("Animals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ImageURL = "/img/Aap.png",
+                            Name = "Aap",
+                            Price = 50f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ImageURL = "/img/Olifant.png",
+                            Name = "Olifant",
+                            Price = 200f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ImageURL = "/img/Zebra.png",
+                            Name = "Zebra",
+                            Price = 150f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ImageURL = "/img/Leeuw.png",
+                            Name = "Leeuw",
+                            Price = 300f,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ImageURL = "/img/Hond.png",
+                            Name = "Hond",
+                            Price = 30f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ImageURL = "/img/Ezel.png",
+                            Name = "Ezel",
+                            Price = 60f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ImageURL = "/img/Koe.png",
+                            Name = "Koe",
+                            Price = 120f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ImageURL = "/img/Eend.png",
+                            Name = "Eend",
+                            Price = 20f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ImageURL = "/img/Kuiken.png",
+                            Name = "Kuiken",
+                            Price = 10f,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ImageURL = "/img/Pinguin.png",
+                            Name = "Pinguïn",
+                            Price = 80f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ImageURL = "/img/IJsbeer.png",
+                            Name = "IJsbeer",
+                            Price = 250f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ImageURL = "/img/Zeehond.png",
+                            Name = "Zeehond",
+                            Price = 100f,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ImageURL = "/img/Kameel.png",
+                            Name = "Kameel",
+                            Price = 180f,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ImageURL = "/img/Slang.png",
+                            Name = "Slang",
+                            Price = 70f,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ImageURL = "/img/T-Rex.png",
+                            Name = "T-Rex",
+                            Price = 1000f,
+                            Type = 4
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ImageURL = "/img/Unicorn.png",
+                            Name = "Unicorn",
+                            Price = 1200f,
+                            Type = 4
+                        });
                 });
 
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Booking", b =>
@@ -67,7 +272,6 @@ namespace BeestjeOpJeFeestje.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContactAddress")
@@ -154,80 +358,6 @@ namespace BeestjeOpJeFeestje.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator().HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -309,24 +439,6 @@ namespace BeestjeOpJeFeestje.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Account", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MembershipLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Account");
-                });
-
             modelBuilder.Entity("BeestjeOpJeFeestje.Data.Models.Animal", b =>
                 {
                     b.HasOne("BeestjeOpJeFeestje.Data.Models.Booking", null)
@@ -338,9 +450,7 @@ namespace BeestjeOpJeFeestje.Migrations
                 {
                     b.HasOne("BeestjeOpJeFeestje.Data.Models.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccountId");
 
                     b.Navigation("Account");
                 });
@@ -356,7 +466,7 @@ namespace BeestjeOpJeFeestje.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BeestjeOpJeFeestje.Data.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,7 +475,7 @@ namespace BeestjeOpJeFeestje.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BeestjeOpJeFeestje.Data.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -380,7 +490,7 @@ namespace BeestjeOpJeFeestje.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BeestjeOpJeFeestje.Data.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -389,7 +499,7 @@ namespace BeestjeOpJeFeestje.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BeestjeOpJeFeestje.Data.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
