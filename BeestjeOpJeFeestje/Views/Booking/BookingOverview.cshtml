@@ -1,11 +1,11 @@
-﻿@model Booking
+﻿@model BookingOverviewViewModel
 
 <partial name="_BookingStepProgress" model="3" />
 
 <form asp-action="BookingConfirmed" method="post">
     @Html.AntiForgeryToken()
     
-    <input type="hidden" asp-for="@Model.Id" />
+    <input type="hidden" asp-for="@Model.Booking.Id" />
 
     <div class="row mt-4">
         <div class="col-10">
@@ -18,25 +18,30 @@
                     <section>
                         <h5>Contactgegevens</h5>
 
-                        <p>Naam: @Model.ContactName</p>
-                        <p>Email: @Model.ContactEmail</p>
-                        <p>Telefoonnummer: @Model.ContactPhoneNumber</p>
-                        <p>Adres: @Model.ContactAddress</p>
+                        <p>Naam: @Model.Booking.ContactName</p>
+                        <p>Email: @Model.Booking.ContactEmail</p>
+                        <p>Telefoonnummer: @Model.Booking.ContactPhoneNumber</p>
+                        <p>Adres: @Model.Booking.ContactAddress</p>
                     </section>
 
                     <section>
                         <h5>Prijs / korting</h5>
                         
                         <ul>
-                            @foreach (Animal animal in Model.Animals)
+                            @foreach (Animal animal in Model.Booking.Animals)
                             {
                                 <li>@animal.Name: @animal.Price $</li>
+                            }
+                            
+                            @foreach (KeyValuePair<string, int> discount in Model.Discounts)
+                            {
+                                <li>@discount.Key: @discount.Value %</li>
                             }
                         </ul>
                     </section>
                     
                     <section>
-                        <strong>Totaal: @Model.Animals.Select(animal => animal.Price).Sum()</strong>
+                        <strong>Totaal: @Model.Booking.Animals.Select(animal => animal.Price).Sum()</strong>
                     </section>
                 </div>
 
@@ -53,7 +58,7 @@
                 </div>
 
                 <div class="card-body">
-                    <p>Datum: @Model.Date.ToString("d-MM-yyyy")</p>
+                    <p>Datum: @Model.Booking.Date.ToString("d-MM-yyyy")</p>
 
                     <hr />
 

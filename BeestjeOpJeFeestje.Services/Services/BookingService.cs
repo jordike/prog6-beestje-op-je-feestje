@@ -8,19 +8,21 @@ namespace BeestjeOpJeFeestje.Services.Services;
 public class BookingService
 {
     private readonly BeestjeOpJeFeestjeContext _context;
+    private readonly DiscountService discountService;
 
     public BookingService(BeestjeOpJeFeestjeContext context)
     {
         _context = context;
+        discountService = new DiscountService();
     }
 
     public Booking StartBooking(DateOnly date)
     {
         Booking booking = new Booking
         {
-            Date = date.ToDateTime(new TimeOnly())
+            Date = date.ToDateTime(new TimeOnly()),
+            Animals = []
         };
-        booking.Animals = new List<Animal>();
 
         _context.Bookings.Add(booking);
         _context.SaveChanges();
@@ -51,19 +53,43 @@ public class BookingService
 
     public string? StoreSelectedAnimals(int bookingId, List<AnimalViewModel> selectedAnimals, IList<Claim> claims)
     {
-        Booking? booking = _context.Bookings
-            .Include(b => b.Animals)
-            .FirstOrDefault(b => b.Id == bookingId);
+        Booking? booking = GetBookingByIdWithAnimals(bookingId);
 
         if (booking == null)
             return null;
 
-        _context.Entry(booking).Collection(b => b.Animals).Load();
+        MembershipLevel membershipLevel = GetMembershipLevel(claims);
+        int maxAnimals = GetMaxAnimalsAllowed(membershipLevel);
 
-        var membershipLevelClaim = claims.FirstOrDefault(c => c.Type == "MembershipLevel");
-        MembershipLevel membershipLevel = (MembershipLevel)Enum.Parse(typeof(MembershipLevel), membershipLevelClaim.Value);
+        string? validationMessage = ValidateSelectedAnimals(selectedAnimals, membershipLevel, maxAnimals);
 
-        int maxAnimals = membershipLevel switch
+        if (validationMessage != null)
+            return validationMessage;
+
+        UpdateBookingAnimals(booking, selectedAnimals);
+        _context.SaveChanges();
+
+        return null;
+    }
+
+    private Booking? GetBookingByIdWithAnimals(int bookingId)
+    {
+        return _context.Bookings
+            .Include(b => b.Animals)
+            .FirstOrDefault(b => b.Id == bookingId);
+    }
+
+    private MembershipLevel GetMembershipLevel(IList<Claim> claims)
+    {
+        Claim? membershipLevelClaim = claims.FirstOrDefault(c => c.Type == "MembershipLevel");
+        return membershipLevelClaim != null
+            ? (MembershipLevel) Enum.Parse(typeof(MembershipLevel), membershipLevelClaim.Value)
+            : MembershipLevel.Geen;
+    }
+
+    private int GetMaxAnimalsAllowed(MembershipLevel membershipLevel)
+    {
+        return membershipLevel switch
         {
             MembershipLevel.Geen => 3,
             MembershipLevel.Silver => 4,
@@ -71,7 +97,10 @@ public class BookingService
             MembershipLevel.Platinum => int.MaxValue,
             _ => 3
         };
+    }
 
+    private string? ValidateSelectedAnimals(List<AnimalViewModel> selectedAnimals, MembershipLevel membershipLevel, int maxAnimals)
+    {
         if (selectedAnimals.Count > maxAnimals)
         {
             return $"Je mag maximaal {maxAnimals} dieren boeken.";
@@ -82,19 +111,17 @@ public class BookingService
             return "Je mag geen VIP-dieren boeken.";
         }
 
+        return null;
+    }
+
+    private void UpdateBookingAnimals(Booking booking, List<AnimalViewModel> selectedAnimals)
+    {
         booking.Animals = new List<Animal>();
 
-        foreach (AnimalViewModel animalViewModel in selectedAnimals)
+        foreach (Animal? animal in selectedAnimals.Select(animalViewModel => _context.Animals.Find(animalViewModel.Animal.Id)).OfType<Animal>())
         {
-            Animal? animal = _context.Animals.Find(animalViewModel.Animal.Id);
-
-            if (animal != null)
-                booking.Animals.Add(animal);
+            booking.Animals.Add(animal);
         }
-
-        _context.SaveChanges();
-
-        return null;
     }
 
     public void StoreInformation(Booking booking)
@@ -115,6 +142,11 @@ public class BookingService
     {
         booking.IsConfirmed = true;
         _context.SaveChanges();
+    }
+
+    public Dictionary<string, int> GetDiscounts(Booking booking)
+    {
+        return discountService.GetDiscounts(booking);
     }
 
     private bool IsAnimalAvailable(Animal animal, DateTime date)

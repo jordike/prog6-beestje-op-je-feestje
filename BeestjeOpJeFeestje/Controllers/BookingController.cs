@@ -122,13 +122,20 @@ public class BookingController : Controller
         if (booking == null)
             return RedirectToAction("Index", "Home");
 
-        return View(booking);
+        Dictionary<string, int> discounts = _bookingService.GetDiscounts(booking);
+        BookingOverviewViewModel viewModel = new BookingOverviewViewModel
+        {
+            Booking = booking,
+            Discounts = discounts
+        };
+
+        return View(viewModel);
     }
 
     [HttpPost]
-    public IActionResult BookingConfirmed(Booking booking)
+    public IActionResult BookingConfirmed(BookingOverviewViewModel viewModel)
     {
-        _bookingService.ConfirmBooking(booking);
+        _bookingService.ConfirmBooking(viewModel.Booking);
 
         TempData["Success"] = "Uw boeking is geplaatst";
 
