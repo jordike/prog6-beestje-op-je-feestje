@@ -2,10 +2,6 @@ using BeestjeOpJeFeestje.Data.Models;
 using BeestjeOpJeFeestje.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BeestjeOpJeFeestje.Tests.Services
 {
@@ -31,8 +27,8 @@ namespace BeestjeOpJeFeestje.Tests.Services
             // Arrange
             var animals = new List<Animal>
             {
-                new Animal { Id = 1, Name = "Lion" },
-                new Animal { Id = 2, Name = "Elephant" }
+                new Animal { Id = 1, Name = "Leeuw" },
+                new Animal { Id = 2, Name = "Olifant" }
             };
             var animalsDbSetMock = DbSetExtensions.ReturnsDbSet(animals);
             _contextMock.Setup(c => c.Animals).Returns(animalsDbSetMock);
@@ -42,15 +38,15 @@ namespace BeestjeOpJeFeestje.Tests.Services
 
             // Assert
             Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result[0].Name, Is.EqualTo("Lion"));
-            Assert.That(result[1].Name, Is.EqualTo("Elephant"));
+            Assert.That(result[0].Name, Is.EqualTo("Leeuw"));
+            Assert.That(result[1].Name, Is.EqualTo("Olifant"));
         }
 
         [Test]
         public void GetAnimal_ShouldReturnAnimal_WhenAnimalExists()
         {
             // Arrange
-            var animal = new Animal { Id = 1, Name = "Lion" };
+            var animal = new Animal { Id = 1, Name = "Leeuw" };
             var animals = new List<Animal> { animal };
             _contextMock.Setup(c => c.Animals).Returns(DbSetExtensions.ReturnsDbSet(animals));
 
@@ -59,7 +55,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Name, Is.EqualTo("Lion"));
+            Assert.That(result.Name, Is.EqualTo("Leeuw"));
         }
 
         [Test]
@@ -80,7 +76,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
         public void GetAnimalBookings_ShouldReturnAnimalBookings_WhenAnimalExists()
         {
             // Arrange
-            var animal = new Animal { Id = 1, Name = "Lion" };
+            var animal = new Animal { Id = 1, Name = "Leeuw" };
             var animals = new List<Animal> { animal };
             var booking1 = new Booking { Id = 1, Animals = animals };
             var booking2 = new Booking { Id = 2, Animals = animals };
@@ -100,7 +96,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
         public void GetAnimalBookings_ShouldReturnNull_WhenAnimalDoesNotExist()
         {
             // Arrange
-            var animal = new Animal { Id = 1, Name = "Lion" };
+            var animal = new Animal { Id = 1, Name = "Leeuw" };
             var bookings = new List<Booking>();
             _contextMock.Setup(c => c.Bookings).Returns(DbSetExtensions.ReturnsDbSet(bookings));
 
@@ -125,7 +121,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
         public void CreateAnimal_ShouldAddAnimalToContext()
         {
             // Arrange
-            var animal = new Animal { Id = 1, Name = "Lion" };
+            var animal = new Animal { Id = 1, Name = "Leeuw" };
 
             // Act
             _animalService.CreateAnimal(animal);
@@ -139,7 +135,7 @@ namespace BeestjeOpJeFeestje.Tests.Services
         public void UpdateAnimal_ShouldUpdateAnimalInContext()
         {
             // Arrange
-            var animal = new Animal { Id = 1, Name = "Lion" };
+            var animal = new Animal { Id = 1, Name = "Leeuw" };
 
             // Act
             _animalService.UpdateAnimal(animal);
