@@ -12,10 +12,21 @@
             <div class="card-body">
                 <section>
                     <h5>Contactgegevens</h5>
-                    <p>Naam: @Model.Booking.ContactName</p>
-                    <p>Email: @Model.Booking.ContactEmail</p>
-                    <p>Telefoonnummer: @Model.Booking.ContactPhoneNumber</p>
-                    <p>Adres: @Model.Booking.ContactAddress</p>
+                    
+                    @if (Model.Booking.Account != null)
+                    {
+                        <p>Naam: @Model.Booking.Account.Name</p>
+                        <p>Email: @Model.Booking.Account.Email</p>
+                        <p>Telefoonnummer: @Model.Booking.Account.PhoneNumber</p>
+                        <p>Adres: @Model.Booking.Account.Address</p>
+                    }
+                    else
+                    {
+                        <p>Naam: @Model.Booking.ContactName</p>
+                        <p>Email: @Model.Booking.ContactEmail</p>
+                        <p>Telefoonnummer: @Model.Booking.ContactPhoneNumber</p>
+                        <p>Adres: @Model.Booking.ContactAddress</p>
+                    }
                 </section>
                 <section>
                     <h5>Beestjes</h5>
@@ -29,13 +40,13 @@
                 @if (Model.Discounts != null)
                 {
                     <section>
-                        <h5>Korting</h5>
+                        <h5>Korting @Model.Discounts.Count</h5>
                         <ul>
                             @foreach (KeyValuePair<string, int> discount in Model.Discounts)
                             {
-                                <li>@discount.Key: @discount.Value %</li>
+                                <li>@discount.Key: @(discount.Value) %</li>
                             }
-                            <li>Totale korting: @Model.TotalDiscount % (max. 60%)</li>
+                            <li>Totale korting: @(Model.TotalDiscount) % (max. 60%)</li>
                         </ul>
                     </section>
                 }

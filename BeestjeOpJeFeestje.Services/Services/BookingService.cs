@@ -36,6 +36,7 @@ public class BookingService
     {
         return _context.Bookings
             .Include(b => b.Animals)
+            .Include(b => b.Account)
             .FirstOrDefault(b => b.Id == id);
     }
 
@@ -43,6 +44,7 @@ public class BookingService
     {
         return _context.Bookings
             .Include(b => b.Animals)
+            .Include(b => b.Account)
             .Where(booking => booking.Account == user)
             .ToList();
     }

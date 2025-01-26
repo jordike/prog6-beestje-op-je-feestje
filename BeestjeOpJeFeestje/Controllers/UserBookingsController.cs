@@ -30,6 +30,7 @@ public class UserBookingsController : Controller
             {
                 Booking = booking,
                 TotalDiscount = _bookingService.GetTotalDiscount(_bookingService.GetDiscounts(booking)),
+                Discounts = _bookingService.GetDiscounts(booking),
                 Price = _bookingService.GetPriceAfterDiscounts(booking)
             })
             .ToList();
