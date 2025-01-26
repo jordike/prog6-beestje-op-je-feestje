@@ -111,9 +111,11 @@ public class BookingController : Controller
     }
 
     [HttpPost]
-    public IActionResult StoreInformation(Booking booking)
+    public async Task<IActionResult> StoreInformation(Booking booking)
     {
-        _bookingService.StoreInformation(booking);
+        Account? account = await _userManager.GetUserAsync(HttpContext.User);
+
+        _bookingService.StoreInformation(booking, account);
 
         return RedirectToAction("BookingOverview", new
         {

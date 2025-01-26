@@ -39,6 +39,20 @@ public class BookingService
             .FirstOrDefault(b => b.Id == id);
     }
 
+    public List<Booking> GetAllUserBookings(Account user)
+    {
+        return _context.Bookings
+            .Include(b => b.Animals)
+            .Where(booking => booking.Account == user)
+            .ToList();
+    }
+
+    public void DeleteBooking(Booking booking)
+    {
+        _context.Bookings.Remove(booking);
+        _context.SaveChanges();
+    }
+
     public List<AnimalViewModel> GetAnimalViewModels(DateTime bookingDate)
     {
         List<Animal> animals = _context.Animals.ToList();
@@ -128,17 +142,25 @@ public class BookingService
         }
     }
 
-    public void StoreInformation(Booking booking)
+    public void StoreInformation(Booking booking, Account? account)
     {
         Booking? _booking = _context.Bookings.Find(booking.Id);
 
         if (_booking == null)
             return;
 
-        _booking.ContactName = booking.ContactName;
-        _booking.ContactEmail = booking.ContactEmail;
-        _booking.ContactPhoneNumber = booking.ContactPhoneNumber;
-        _booking.ContactAddress = booking.ContactAddress;
+        if (account != null)
+        {
+            _booking.Account = account;
+        }
+        else
+        {
+            _booking.ContactName = booking.ContactName;
+            _booking.ContactEmail = booking.ContactEmail;
+            _booking.ContactPhoneNumber = booking.ContactPhoneNumber;
+            _booking.ContactAddress = booking.ContactAddress;
+        }
+
         _context.SaveChanges();
     }
 
